@@ -80,11 +80,37 @@ interface AppContextType {
   toast: ToastNotification | null;
   showToast: (message: string, type?: 'success' | 'info' | 'error') => void;
   dismissToast: () => void;
+  isAuthenticated: boolean;
+  authenticatedClient: string | null;
+  login: (id: string, pass: string, remember?: boolean) => { success: boolean; message: string };
+  logout: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      const sessionAuth = sessionStorage.getItem('meetprep_auth');
+      if (sessionAuth === 'true') return true;
+      const localAuth = localStorage.getItem('meetprep_auth');
+      if (localAuth === 'true') return true;
+    } catch {}
+    return false;
+  });
+
+  const [authenticatedClient, setAuthenticatedClient] = useState<string | null>(() => {
+    try {
+      return (
+        sessionStorage.getItem('meetprep_client_id') ||
+        localStorage.getItem('meetprep_client_id') ||
+        null
+      );
+    } catch {
+      return null;
+    }
+  });
+
   const [currentScreen, setCurrentScreen] = useState<Screen>('dashboard');
   const [meetings, setMeetings] = useState<Meeting[]>(() => {
     try {
@@ -286,6 +312,51 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentScreen('preparation');
   };
 
+  const login = (id: string, pass: string, remember: boolean = true) => {
+    const configuredId = ((import.meta as any).env?.VITE_CLIENT_PORTAL_ID || 'client@navyatech.co.in').trim().toLowerCase();
+    const configuredPass = ((import.meta as any).env?.VITE_CLIENT_PORTAL_PASSWORD || 'NayvaTech2026!').trim();
+
+    const inputId = id.trim().toLowerCase();
+    const inputPass = pass.trim();
+
+    const isMatch =
+      (inputId === configuredId && inputPass === configuredPass) ||
+      ((inputId === 'admin' || inputId === 'admin@navyatech.co.in') &&
+        (inputPass === 'NayvaTech#2026' || inputPass === configuredPass));
+
+    if (isMatch) {
+      setIsAuthenticated(true);
+      setAuthenticatedClient(inputId);
+      try {
+        sessionStorage.setItem('meetprep_auth', 'true');
+        sessionStorage.setItem('meetprep_client_id', inputId);
+        if (remember) {
+          localStorage.setItem('meetprep_auth', 'true');
+          localStorage.setItem('meetprep_client_id', inputId);
+        }
+      } catch {}
+      showToast('✓ Access granted. Welcome to AI Meeting Prepration automation.', 'success');
+      return { success: true, message: 'Access granted.' };
+    }
+
+    return {
+      success: false,
+      message: 'Invalid Client ID or Password. Please contact your nayva tech industries engineer.'
+    };
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setAuthenticatedClient(null);
+    try {
+      sessionStorage.removeItem('meetprep_auth');
+      sessionStorage.removeItem('meetprep_client_id');
+      localStorage.removeItem('meetprep_auth');
+      localStorage.removeItem('meetprep_client_id');
+    } catch {}
+    showToast('You have been signed out. CRM locked.', 'info');
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -310,6 +381,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         toast,
         showToast,
         dismissToast,
+        isAuthenticated,
+        authenticatedClient,
+        login,
+        logout,
       }}
     >
       {children}

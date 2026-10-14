@@ -1,13 +1,13 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { Menu, HelpCircle } from 'lucide-react';
+import { Menu, HelpCircle, LogOut } from 'lucide-react';
 
 interface TopHeaderProps {
   onOpenMobile: () => void;
 }
 
 export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
-  const { currentScreen, workflowStatus, openGuide } = useApp();
+  const { currentScreen, workflowStatus, openGuide, logout, authenticatedClient } = useApp();
 
   const getScreenDetails = () => {
     switch (currentScreen) {
@@ -33,8 +33,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
         };
       default:
         return {
-          title: 'MeetPrep CRM',
-          subtitle: 'Novatic Industries'
+          title: 'AI Meeting Prepration automation',
+          subtitle: 'nayva tech industries'
         };
     }
   };
@@ -80,7 +80,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
           <span className={`w-2 h-2 rounded-full ${
             workflowStatus.isActive ? 'bg-emerald-400' : 'bg-zinc-600'
           }`} />
-          <span className="text-[11px] font-medium hidden xs:inline">n8n Engine:</span>
+          <span className="text-[11px] font-medium hidden xs:inline">AI Automation:</span>
           <span className={`text-[11px] font-semibold ${
             workflowStatus.isActive ? 'text-emerald-400' : 'text-zinc-500'
           }`}>
@@ -97,9 +97,19 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
             rel="noopener noreferrer"
             className="text-zinc-300 hover:text-white font-medium transition-colors"
           >
-            Novatic Industries
+            nayva tech industries
           </a>
         </div>
+
+        {/* Lock / Sign Out */}
+        <button
+          onClick={logout}
+          className="p-1.5 rounded-lg text-zinc-500 hover:text-red-300 hover:bg-red-950/30 border border-transparent hover:border-red-900/40 transition-colors ml-1"
+          title={`Sign Out & Lock CRM (${authenticatedClient || 'Client'})`}
+          aria-label="Sign Out"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+        </button>
       </div>
     </header>
   );

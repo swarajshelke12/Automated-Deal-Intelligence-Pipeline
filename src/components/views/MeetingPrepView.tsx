@@ -26,7 +26,7 @@ export const MeetingPrepView: React.FC = () => {
 
   const formatBriefForWhatsApp = () => {
     if (!brief || !currentMeeting) return '';
-    return `🎯 *Executive Meeting Brief: ${currentMeeting.attendeeName}*\n🏢 *Company:* ${currentMeeting.attendeeCompany} (${currentMeeting.attendeeRole})\n⏰ *Time:* ${currentMeeting.date} at ${currentMeeting.time}\n\n📌 *Objective & Overview:*\n${brief.summary}\n\n📧 *Email Context:*\n${brief.emailSummary}\n\n💼 *LinkedIn Insights:*\n${brief.linkedinInsights}\n\n💡 *Talking Points:*\n${brief.talkingPoints.map((tp, i) => `${i + 1}. ${tp}`).join('\n')}\n\n— _MeetPrep CRM by Novatic Industries_`;
+    return `🎯 *Executive Meeting Brief: ${currentMeeting.attendeeName}*\n🏢 *Company:* ${currentMeeting.attendeeCompany} (${currentMeeting.attendeeRole})\n⏰ *Time:* ${currentMeeting.date} at ${currentMeeting.time}\n\n📌 *Objective & Overview:*\n${brief.summary}\n\n📧 *Email Context:*\n${brief.emailSummary}\n\n💼 *LinkedIn Insights:*\n${brief.linkedinInsights}\n\n💡 *Talking Points:*\n${brief.talkingPoints.map((tp, i) => `${i + 1}. ${tp}`).join('\n')}\n\n— _AI Meeting Prepration automation by nayva tech industries_`;
   };
 
   const handleSendToWhatsApp = async () => {

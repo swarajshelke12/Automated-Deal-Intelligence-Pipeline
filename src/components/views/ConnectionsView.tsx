@@ -18,8 +18,7 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
-  Zap,
-  Workflow
+  RefreshCw
 } from 'lucide-react';
 
 function formatRemainingTime(ms: number): string {
@@ -31,6 +30,7 @@ function formatRemainingTime(ms: number): string {
 export type FieldKey =
   | 'googleClientId'
   | 'googleClientSecret'
+  | 'googleAccountEmail'
   | 'openAiApiKey'
   | 'apifyApiKey'
   | 'linkedInCookie'
@@ -259,7 +259,10 @@ export const ConnectionsView: React.FC = () => {
     setCurrentScreen,
     openGuide,
     testWhatsAppAlert,
-    showToast
+    showToast,
+    syncCalendar,
+    isSyncing,
+    workflowStatus
   } = useApp();
 
   const [form, setForm] = useState<WorkflowCredentials>(credentials);
@@ -269,7 +272,6 @@ export const ConnectionsView: React.FC = () => {
 
   const [remainingMs, setRemainingMs] = useState<number>(0);
   const [showAdvancedHelp, setShowAdvancedHelp] = useState(false);
-  const [showBackendTopology, setShowBackendTopology] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isTestingWhatsApp, setIsTestingWhatsApp] = useState(false);
   const [webhookUrl, setWebhookUrlState] = useState<string>(() => {
@@ -504,23 +506,47 @@ export const ConnectionsView: React.FC = () => {
           </div>
 
           <SimpleField
-            label="Client ID"
+            label="Google Calendar Email"
+            value={form.googleAccountEmail || ''}
+            onChange={(val) => setField('googleAccountEmail', val)}
+            placeholder="e.g. client@company.com"
+            hint="Calendar where your meetings are scheduled"
+            isPassword={false}
+            required={false}
+          />
+
+          <SimpleField
+            label="Client ID (OAuth)"
             value={form.googleClientId}
             onChange={(val) => setField('googleClientId', val)}
             onBlur={() => handleBlur('googleClientId')}
             error={errors.googleClientId}
             isValid={isGoogleValid || (Boolean(form.googleClientId.trim()) && !errors.googleClientId && !validateSingleField('googleClientId', form.googleClientId))}
             placeholder="xxxxxx.apps.googleusercontent.com"
+            hint="Configured by developers"
           />
           <SimpleField
-            label="Client Secret"
+            label="Client Secret (OAuth)"
             value={form.googleClientSecret}
             onChange={(val) => setField('googleClientSecret', val)}
             onBlur={() => handleBlur('googleClientSecret')}
             error={errors.googleClientSecret}
             isValid={isGoogleValid || (Boolean(form.googleClientSecret.trim()) && !errors.googleClientSecret && !validateSingleField('googleClientSecret', form.googleClientSecret))}
             placeholder="GOCSPX-xxxxxx"
+            hint="Configured by developers"
           />
+
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={syncCalendar}
+              disabled={isSyncing}
+              className="w-full py-2 px-3 rounded-lg bg-blue-950/40 hover:bg-blue-900/50 text-blue-300 text-xs font-medium border border-blue-800/40 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-blue-400 ${isSyncing ? 'animate-spin' : ''}`} />
+              <span>{isSyncing ? 'Scanning Google Calendar...' : 'Direct Sync Google Calendar'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Card 2: AI Intelligence (Groq / OpenAI) */}
@@ -729,128 +755,100 @@ export const ConnectionsView: React.FC = () => {
         )}
       </div>
 
-      {/* ── n8n Automation Engine Webhook (Production Bridge) ──────────────── */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-pink-950/50 border border-pink-900/50 flex items-center justify-center text-pink-400">
-              <Zap className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-xs font-semibold text-zinc-100">n8n Automation Engine Webhook</h3>
-              <p className="text-[11px] text-zinc-500">Live webhook endpoint for calendar synchronization &amp; background triggers</p>
-            </div>
-          </div>
-          <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
-            webhookUrl.trim()
-              ? 'bg-emerald-950/70 border border-emerald-800/70 text-emerald-400'
-              : 'bg-zinc-800 text-zinc-400'
-          }`}>
-            {webhookUrl.trim() ? '🟢 Linked to n8n' : 'Standalone / Vault Mode'}
-          </span>
-        </div>
-
-        <SimpleField
-          label="n8n Production Webhook URL"
-          value={webhookUrl}
-          onChange={handleUpdateWebhookUrl}
-          placeholder="https://n8n.yourcompany.com/webhook/meetprep-production"
-          hint="Optional"
-          isPassword={false}
-          required={false}
-        />
-        <div className="p-2.5 rounded-lg bg-zinc-950/60 border border-zinc-800/80 text-[11px] text-zinc-400 leading-snug">
-          When configured, calendar syncs, briefing generations, and credentials submissions connect directly to your live n8n pipeline.
-        </div>
-      </div>
-
-      {/* ── Backend Dual-Workflow Architecture Explorer ─────────────────────── */}
+      {/* ── Client Developer Hand-Off & Automation Status Card ────────────── */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-800/60 flex items-center justify-center text-emerald-400">
-              <Workflow className="w-4 h-4" />
+              <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-xs font-semibold text-zinc-100 flex items-center gap-2">
-                <span>Backend n8n Workflows Engine</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800/60 font-mono">
-                  2 Linked Pipelines · 61 Total Nodes
+                <span>AI Meeting Prepration automation</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800/60">
+                  Managed by nayva tech industries
                 </span>
               </h3>
               <p className="text-[11px] text-zinc-400 mt-0.5">
-                Configured from JSON backend in <span className="font-mono text-zinc-300">n8nWworkflows/</span>
+                Zero backend complexity · Only interact with your Google Calendar, WhatsApp, and this CRM
               </p>
             </div>
           </div>
 
           <button
             type="button"
-            onClick={() => setShowBackendTopology(!showBackendTopology)}
-            className="text-xs text-zinc-400 hover:text-zinc-200 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+            onClick={syncCalendar}
+            disabled={isSyncing}
+            className="px-3.5 py-1.5 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/50 text-emerald-300 text-xs font-medium border border-emerald-800/50 transition-colors flex items-center gap-1.5 disabled:opacity-50 self-start sm:self-auto cursor-pointer"
           >
-            <span>{showBackendTopology ? 'Collapse Topology' : 'View Pipeline Details'}</span>
-            {showBackendTopology ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isSyncing ? 'animate-spin' : ''}`} />
+            <span>{isSyncing ? 'Scanning Calendar...' : 'Check Calendar Now'}</span>
           </button>
         </div>
 
-        {showBackendTopology && (
-          <div className="space-y-3.5 pt-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-              {/* Pipeline 1 Card */}
-              <div className="p-3.5 rounded-xl bg-zinc-950/70 border border-zinc-800/80 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-400" />
-                    <h4 className="text-xs font-semibold text-zinc-200">1. Primary Dispatch Engine</h4>
-                  </div>
-                  <span className="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">21 Nodes</span>
-                </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed font-mono truncate" title="Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp.json">
-                  Automate Sales Meeting Prep with AI...
-                </p>
-                <div className="text-[11px] text-zinc-400 space-y-1 bg-zinc-900/50 p-2.5 rounded-lg border border-zinc-800/50">
-                  <div>• <strong>Trigger:</strong> Google Calendar Poller (1h lead)</div>
-                  <div>• <strong>Extractor:</strong> LangChain Attendee Extractor</div>
-                  <div>• <strong>Sub-Workflow:</strong> Calls Email &amp; LinkedIn pipeline</div>
-                  <div>• <strong>Synthesis:</strong> Attendee Research Agent (Groq / OpenAI)</div>
-                  <div>• <strong>Dispatch:</strong> WhatsApp Cloud API &amp; Telegram</div>
-                </div>
+        <div className="p-4 rounded-xl bg-zinc-950/70 border border-zinc-850 space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800/70 space-y-1">
+              <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-blue-950 text-blue-400 border border-blue-800 text-[10px] flex items-center justify-center font-bold">1</span>
+                <span>Direct Calendar Sync</span>
               </div>
-
-              {/* Pipeline 2 Card */}
-              <div className="p-3.5 rounded-xl bg-zinc-950/70 border border-zinc-800/80 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <h4 className="text-xs font-semibold text-zinc-200">2. Research &amp; Enrichment</h4>
-                  </div>
-                  <span className="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">40 Nodes</span>
-                </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed font-mono truncate" title="Email & linkedin scraping for meeting prep.json">
-                  Email &amp; linkedin scraping for meeting prep...
-                </p>
-                <div className="text-[11px] text-zinc-400 space-y-1 bg-zinc-900/50 p-2.5 rounded-lg border border-zinc-800/50">
-                  <div>• <strong>Route &quot;email&quot;:</strong> Gmail node fetches last email thread</div>
-                  <div>• <strong>Recap Agent:</strong> Summarizes decisions &amp; agreements</div>
-                  <div>• <strong>Route &quot;linkedin&quot;:</strong> Apify Web Scraper + <code className="text-zinc-300 font-mono">li_at</code></div>
-                  <div>• <strong>HTML Extractors:</strong> About &amp; recent activities parsed</div>
-                  <div>• <strong>LinkedIn Agent:</strong> Generates executive talking points</div>
-                </div>
-              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                Connect your Google Calendar above. Upcoming invites and attendees are automatically polled 24/7.
+              </p>
             </div>
 
-            {/* Quick Verification Status */}
-            <div className="p-3 rounded-lg bg-zinc-950/90 border border-zinc-800 text-[11px] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div className="flex items-center gap-2 text-zinc-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Dual JSON backend files verified in workspace (<code className="font-mono text-emerald-300">n8nWworkflows/</code>)</span>
+            <div className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800/70 space-y-1">
+              <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-purple-950 text-purple-400 border border-purple-800 text-[10px] flex items-center justify-center font-bold">2</span>
+                <span>Developer Hand-off</span>
               </div>
-              <span className="text-zinc-500 font-mono">Deterministic check: execution/validate_workflow_schemas.py</span>
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                nayva tech industries developers securely link your keys to your private automation pipeline.
+              </p>
+            </div>
+
+            <div className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800/70 space-y-1">
+              <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] flex items-center justify-center font-bold">3</span>
+                <span>WhatsApp Briefings</span>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                Receive synthesized attendee profiles, email recaps, and strategic talking points on WhatsApp 1 hour before calls.
+              </p>
             </div>
           </div>
-        )}
+
+          <div className="pt-2 border-t border-zinc-850/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-zinc-400">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Full client isolation: Zero backend servers or raw workflow nodes visible</span>
+            </span>
+            <span className="text-emerald-400 font-mono text-[10px]">
+              {workflowStatus.isActive ? '● Live & Ready to Track' : '● Awaiting Activation'}
+            </span>
+          </div>
+        </div>
       </div>
+
+      {/* ── Optional Developer Webhook Endpoint (Collapsed) ──────────────────── */}
+      <details className="border border-zinc-800/60 rounded-xl bg-zinc-950/30 overflow-hidden text-xs">
+        <summary className="px-4 py-2.5 text-zinc-500 hover:text-zinc-300 cursor-pointer select-none flex items-center justify-between">
+          <span>Developer Settings (Optional Webhook Forwarding)</span>
+          <span className="text-[10px] font-mono text-zinc-600">Advanced</span>
+        </summary>
+        <div className="p-4 pt-2 border-t border-zinc-800/60 space-y-2">
+          <SimpleField
+            label="Dedicated n8n Automation Webhook URL"
+            value={webhookUrl}
+            onChange={handleUpdateWebhookUrl}
+            placeholder="https://n8n.yourcompany.com/webhook/meetprep-production"
+            hint="Set by developers when pairing dedicated cloud or self-hosted n8n instances"
+            isPassword={false}
+            required={false}
+          />
+        </div>
+      </details>
 
       {/* ── Primary Action Bar ──────────────────────────────────────────────── */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">

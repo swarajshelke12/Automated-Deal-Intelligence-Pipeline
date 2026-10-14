@@ -55,7 +55,25 @@ def test_webhook():
             logger.info(f"Response body: {body[:200]}")
             return True
     except urllib.error.HTTPError as e:
-        logger.warning(f"[FAIL] Webhook returned HTTP error {e.code}: {e.read().decode('utf-8', errors='ignore')}")
+        err_body = e.read().decode("utf-8", errors="ignore")
+        if "GET request" in err_body:
+            logger.info("[INFO] Webhook is registered for GET requests. Retrying with GET...")
+            get_req = urllib.request.Request(
+                webhook_url,
+                headers={"Authorization": auth_header} if auth_header else {},
+                method="GET"
+            )
+            try:
+                with urllib.request.urlopen(get_req, timeout=10) as get_resp:
+                    status = get_resp.status
+                    body = get_resp.read().decode("utf-8")
+                    logger.info(f"[PASS] Webhook responded to GET with status {status}")
+                    logger.info(f"Response body: {body[:200]}")
+                    return True
+            except Exception as get_err:
+                logger.warning(f"[FAIL] GET fallback error: {get_err}")
+                return False
+        logger.warning(f"[FAIL] Webhook returned HTTP error {e.code}: {err_body}")
         return False
     except Exception as e:
         logger.warning(f"[FAIL] Webhook request error: {e}")

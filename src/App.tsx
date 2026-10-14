@@ -8,11 +8,35 @@ import { MeetingsView } from './components/views/MeetingsView';
 import { MeetingPrepView } from './components/views/MeetingPrepView';
 import { ConnectionsView } from './components/views/ConnectionsView';
 import { HowItWorksModal } from './components/common/HowItWorksModal';
+import { LoginGateView } from './components/auth/LoginGateView';
 import { ExternalLink, CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
-  const { currentScreen, toast, dismissToast } = useApp();
+  const { currentScreen, toast, dismissToast, isAuthenticated } = useApp();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // If client is not authenticated with developer-assigned credentials, lock access
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col font-sans selection:bg-zinc-800 selection:text-zinc-100">
+        {toast && (
+          <div className="fixed bottom-5 right-5 z-50 max-w-sm flex items-center gap-2.5 px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-750 text-xs shadow-2xl animate-in slide-in-from-bottom-3 duration-200">
+            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
+            {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />}
+            {toast.type === 'info' && <Info className="w-4 h-4 text-blue-400 flex-shrink-0" />}
+            <span className="text-zinc-200 flex-1 leading-snug">{toast.message}</span>
+            <button
+              onClick={dismissToast}
+              className="text-zinc-500 hover:text-zinc-300 p-0.5 transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
+        <LoginGateView />
+      </div>
+    );
+  }
 
   const renderActiveScreen = () => {
     switch (currentScreen) {
@@ -66,11 +90,11 @@ const MainLayout: React.FC = () => {
         <footer className="border-t border-zinc-850 px-4 sm:px-6 py-3.5 bg-zinc-950 text-xs text-zinc-500">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-zinc-300">MeetPrep CRM</span>
+              <span className="font-semibold text-zinc-300">AI Meeting Prepration automation</span>
               <span>·</span>
               <span className="text-zinc-400">Production AI Meeting Intelligence</span>
               <span>·</span>
-              <span>Novatic Industries</span>
+              <span>nayva tech industries</span>
             </div>
 
             <div className="flex items-center gap-4 text-[11px]">

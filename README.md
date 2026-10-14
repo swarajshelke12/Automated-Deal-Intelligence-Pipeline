@@ -1,13 +1,7 @@
 <div align="center">
 
-<<<<<<< HEAD
-#  MeetPrep CRM (MeetingOS)
+# AI Meeting Prepration automation
 ### *AI-Powered Meeting Preparation & Executive Intelligence Portal*
-=======
-# MeetPrep CRM (MeetingOS)
-
-### _AI-Powered Meeting Preparation & Executive Intelligence Portal_
->>>>>>> 32e06f9 (docs: update README formatting)
 
 [![React 19](https://img.shields.io/badge/React-19.2-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -18,7 +12,7 @@
 [![License](https://img.shields.io/badge/License-Proprietary-8B5CF6?style=flat-square)](https://www.navyatech.co.in/)
 
 <p align="center">
-  <strong>Client Automation Portal engineered by <a href="https://www.navyatech.co.in/">Novatic Industries</a></strong>
+  <strong>Client Automation Portal engineered by <a href="https://www.navyatech.co.in/">nayva tech industries</a></strong>
 </p>
 
 <p align="center">
@@ -194,7 +188,7 @@ The portal adheres to a **Zero-Knowledge, Ephemeral Credential Lifecycle** speci
           ├───────────────────────────────┐
           │ (Within 24 Hours)             │ (After 24 Hours)
           ▼                               ▼
-[ Novatic Industries Configures n8n ]   [ Automatic Permanent Memory Purge ]
+[ nayva tech industries Configures n8n ]   [ Automatic Permanent Memory Purge ]
                                           │
                                           ▼
                                 [ Keys Irretrievably Erased ]
@@ -203,7 +197,7 @@ The portal adheres to a **Zero-Knowledge, Ephemeral Credential Lifecycle** speci
 ### Security Tenets
 
 1. **Zero Database Footprint**: Credentials are never sent to or stored in a persistent backend database.
-2. **12-Hour Ephemeral Purge**: Submitted keys are permanently wiped from browser memory and storage after 12 hours. Once purged, neither the client nor Novatic Industries can inspect previous keys.
+2. **12-Hour Ephemeral Purge**: Submitted keys are permanently wiped from browser memory and storage after 12 hours. Once purged, neither the client nor nayva tech industries can inspect previous keys.
 3. **Hidden by Default**: After submission, values are masked with an OpenAI/Gemini-style security guard. An explicit "Unlock & View" action is required to inspect them.
 4. **Client-Side Validation & Entropy Checks**:
    All credential fields enforce strict format, length, and prefix constraints before allowing submission:
@@ -225,11 +219,12 @@ The portal adheres to a **Zero-Knowledge, Ephemeral Credential Lifecycle** speci
 
 ## ⚡ n8n Automation Engine Integration
 
-The repository includes the production n8n workflow JSON used by Novatic Industries:
+The repository includes the production n8n workflow JSON used by nayva tech industries:
 
 ```
-actual_workflow/
+n8nWorkflows/
 └── Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp.json
+└── Email & linkedin scraping for meeting prep.json
 ```
 
 ### Importing into n8n
@@ -465,9 +460,9 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ---
 
-## 🏢 About Novatic Industries
+## 🏢 About nayva tech industries
 
-**Novatic Industries** is a premier AI automation company specializing in bespoke workflow automation, AI agents, and enterprise process optimization.
+**nayva tech industries** is a premier AI automation company specializing in bespoke workflow automation, AI agents, and enterprise process optimization.
 
 - **Website**: [https://www.navyatech.co.in/](https://www.navyatech.co.in/)
 - **Services**: Custom n8n workflows, generative AI integrations, CRM intelligence pipelines, and B2B automation portals.
@@ -477,9 +472,9 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ## 📄 License & Copyright
 
-© 2024–2026 **Novatic Industries**. All rights reserved.  
+© 2024–2026 **nayva tech industries**. All rights reserved.  
 Unauthorized distribution, copying, or modification of proprietary workflows and designs is strictly prohibited.
 
 <div align="center">
-  <sub>Built with precision by <a href="https://www.navyatech.co.in/">Novatic Industries</a></sub>
+  <sub>Built with precision by <a href="https://www.navyatech.co.in/">nayva tech industries</a></sub>
 </div>

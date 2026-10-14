@@ -1,8 +1,8 @@
 # MeetPrep CRM — Build Context & Project Overview
 
-**Last Updated**: September 23, 2026  
-**Project**: MeetPrep CRM (MeetingOS)  
-**Owner**: Novatic Industries  
+**Last Updated**: October 14, 2026  
+**Project**: AI Meeting Prepration automation  
+**Owner**: nayva tech industries  
 **Status**: Production-ready client delivery portal
 
 ---
@@ -410,7 +410,7 @@ EXPOSE 80
 
 ## Contact & Support
 
-- **Developer / Company**: Novatic Industries
+- **Developer / Company**: nayva tech industries
 - **Website**: https://www.navyatech.co.in/
 - **Email**: contact@navyatech.co.in
 - **GitHub**: https://github.com/swarajshelke12/CRM_Nayva_tech

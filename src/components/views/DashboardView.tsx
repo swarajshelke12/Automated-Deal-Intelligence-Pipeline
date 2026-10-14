@@ -84,10 +84,10 @@ export const DashboardView: React.FC = () => {
             </div>
 
             <h1 className="text-lg font-semibold text-zinc-100 tracking-tight">
-              Executive Meeting Intelligence
+              AI Meeting Prepration automation
             </h1>
             <p className="text-xs text-zinc-400 mt-1 leading-relaxed max-w-xl">
-              Autonomous calendar monitoring, background attendee research, and executive WhatsApp briefings delivered 60 minutes before calls.
+              Powered by nayva tech industries. Autonomous calendar monitoring, attendee research, and executive WhatsApp briefings delivered 60 minutes before calls.
             </p>
           </div>
 
@@ -194,8 +194,25 @@ export const DashboardView: React.FC = () => {
                 </div>
                 <p className="text-xs font-medium text-zinc-300">No scheduled meetings yet</p>
                 <p className="text-[11px] text-zinc-500 mt-1 max-w-xs leading-relaxed">
-                  Connect your Google Calendar or click "Sync Calendar" above to load upcoming sessions and auto-generate briefings.
+                  Connect your Google Calendar or click &quot;Sync Calendar&quot; to scan upcoming sessions and auto-generate briefings.
                 </p>
+                <div className="mt-4 flex items-center gap-2">
+                  <button
+                    onClick={syncCalendar}
+                    disabled={isSyncing}
+                    className="px-3.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-750 text-zinc-200 text-xs font-medium border border-zinc-700 transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 text-emerald-400 ${isSyncing ? 'animate-spin' : ''}`} />
+                    <span>Sync Google Calendar</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentScreen('connections')}
+                    className="px-3.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Configure Setup</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             ) : (
               meetings.slice(0, 4).map((meeting) => (
