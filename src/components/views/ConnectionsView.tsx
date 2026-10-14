@@ -185,6 +185,8 @@ interface SimpleFieldProps {
   error?: string;
   isValid?: boolean;
   required?: boolean;
+  externalLink?: string;
+  externalLinkLabel?: string;
 }
 
 const SimpleField: React.FC<SimpleFieldProps> = ({
@@ -197,21 +199,37 @@ const SimpleField: React.FC<SimpleFieldProps> = ({
   isPassword = true,
   error,
   isValid = false,
-  required = true
+  required = true,
+  externalLink,
+  externalLinkLabel = 'Get Key / Link ↗'
 }) => {
   const [show, setShow] = useState(false);
   const isFilled = value.trim().length > 0;
 
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center justify-between">
-        <label className="text-xs font-medium text-zinc-300 flex items-center gap-1.5">
+      <div className="flex items-center justify-between gap-2">
+        <label className="text-xs font-medium text-zinc-300 flex items-center gap-1.5 flex-wrap">
           <span>{label}</span>
           {required && <span className="text-amber-400 text-xs" title="Required field">*</span>}
           {isValid && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
           {error && <AlertCircle className="w-3.5 h-3.5 text-red-400" />}
         </label>
-        {hint && <span className="text-[11px] text-zinc-500">{hint}</span>}
+        <div className="flex items-center gap-2 text-[11px]">
+          {externalLink && (
+            <a
+              href={externalLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-400 hover:text-emerald-300 font-medium inline-flex items-center gap-1 transition-colors hover:underline"
+              title={`Open ${label} portal directly`}
+            >
+              <span>{externalLinkLabel}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+          {hint && <span className="text-zinc-500 hidden xs:inline">{hint}</span>}
+        </div>
       </div>
 
       <div className="relative">
@@ -513,6 +531,8 @@ export const ConnectionsView: React.FC = () => {
             hint="Calendar where your meetings are scheduled"
             isPassword={false}
             required={false}
+            externalLink="https://calendar.google.com/"
+            externalLinkLabel="Open Google Calendar ↗"
           />
 
           <SimpleField
@@ -523,7 +543,9 @@ export const ConnectionsView: React.FC = () => {
             error={errors.googleClientId}
             isValid={isGoogleValid || (Boolean(form.googleClientId.trim()) && !errors.googleClientId && !validateSingleField('googleClientId', form.googleClientId))}
             placeholder="xxxxxx.apps.googleusercontent.com"
-            hint="Configured by developers"
+            hint="Google Cloud Console"
+            externalLink="https://console.cloud.google.com/apis/credentials"
+            externalLinkLabel="Get Google OAuth Keys ↗"
           />
           <SimpleField
             label="Client Secret (OAuth)"
@@ -533,7 +555,9 @@ export const ConnectionsView: React.FC = () => {
             error={errors.googleClientSecret}
             isValid={isGoogleValid || (Boolean(form.googleClientSecret.trim()) && !errors.googleClientSecret && !validateSingleField('googleClientSecret', form.googleClientSecret))}
             placeholder="GOCSPX-xxxxxx"
-            hint="Configured by developers"
+            hint="Google Cloud Console"
+            externalLink="https://console.cloud.google.com/apis/credentials"
+            externalLinkLabel="Google Credentials ↗"
           />
 
           <div className="pt-1">
@@ -580,10 +604,21 @@ export const ConnectionsView: React.FC = () => {
             error={errors.openAiApiKey}
             isValid={isOpenAiValid || (Boolean(form.openAiApiKey.trim()) && !errors.openAiApiKey && !validateSingleField('openAiApiKey', form.openAiApiKey))}
             placeholder="gsk_... (Groq) or sk-... (OpenAI)"
-            hint="Private key"
+            hint="Groq Console / OpenAI API"
+            externalLink="https://console.groq.com/keys"
+            externalLinkLabel="Get Groq Key ↗"
           />
-          <div className="p-2.5 rounded-lg bg-zinc-950/60 border border-zinc-800/80 text-[11px] text-zinc-400 leading-snug">
-            Directly executes the <span className="text-zinc-200 font-mono">Attendee Research Agent</span> (openai/gpt-oss-20b) and <span className="text-zinc-200 font-mono">LinkedIn/Email Summarizer Agents</span> in the backend n8n workflow.
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-950/60 border border-zinc-800/80 text-[11px] text-zinc-400">
+            <span>Or using OpenAI directly?</span>
+            <a
+              href="https://platform.openai.com/api-keys"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:text-purple-300 font-medium inline-flex items-center gap-1 hover:underline"
+            >
+              <span>Get OpenAI Key ↗</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
         </div>
 
@@ -618,6 +653,9 @@ export const ConnectionsView: React.FC = () => {
             error={errors.apifyApiKey}
             isValid={isApifyValid || (Boolean(form.apifyApiKey.trim()) && !errors.apifyApiKey && !validateSingleField('apifyApiKey', form.apifyApiKey))}
             placeholder="apify_api_xxxxxxxxxxxx"
+            hint="Apify Console Integrations"
+            externalLink="https://console.apify.com/account/integrations"
+            externalLinkLabel="Get Apify Key ↗"
           />
           <SimpleField
             label="LinkedIn Cookie (Optional)"
@@ -629,6 +667,8 @@ export const ConnectionsView: React.FC = () => {
             placeholder="li_at=AQEDAT..."
             hint="For deep profile context"
             required={false}
+            externalLink="https://www.linkedin.com/"
+            externalLinkLabel="Open LinkedIn ↗"
           />
         </div>
 
@@ -663,8 +703,10 @@ export const ConnectionsView: React.FC = () => {
             error={errors.whatsAppBusinessId}
             isValid={isWhatsAppValid || (Boolean(form.whatsAppBusinessId.trim()) && !errors.whatsAppBusinessId && !validateSingleField('whatsAppBusinessId', form.whatsAppBusinessId))}
             placeholder="15-digit ID (e.g. 100609349424982)"
-            hint="From Meta Dev Portal"
+            hint="Meta Developers > WhatsApp > API Setup"
             isPassword={false}
+            externalLink="https://developers.facebook.com/apps/"
+            externalLinkLabel="Get Meta Phone ID ↗"
           />
           <SimpleField
             label="WhatsApp Access Token"
@@ -674,6 +716,9 @@ export const ConnectionsView: React.FC = () => {
             error={errors.whatsAppAccessToken}
             isValid={isWhatsAppValid || (Boolean(form.whatsAppAccessToken.trim()) && !errors.whatsAppAccessToken && !validateSingleField('whatsAppAccessToken', form.whatsAppAccessToken))}
             placeholder="EAAxxxxxxxxxxxxxxxxxxxx"
+            hint="Meta WhatsApp API Setup"
+            externalLink="https://developers.facebook.com/apps/"
+            externalLinkLabel="Get WhatsApp Token ↗"
           />
           <SimpleField
             label="Recipient WhatsApp Phone Number"

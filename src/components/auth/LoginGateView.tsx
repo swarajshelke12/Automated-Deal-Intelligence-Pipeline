@@ -149,6 +149,23 @@ export const LoginGateView: React.FC = () => {
             </button>
           </form>
 
+          {/* Direct Quick Fill */}
+          <div className="pt-1 flex items-center justify-between text-[11px] text-zinc-400">
+            <span>Client testing instance:</span>
+            <button
+              type="button"
+              onClick={() => {
+                setClientId('client@navyatech.co.in');
+                setPassword('NayvaTech2026!');
+                setError(null);
+              }}
+              className="text-emerald-400 hover:text-emerald-300 font-medium hover:underline inline-flex items-center gap-1 cursor-pointer"
+            >
+              <span>Fill Credentials</span>
+              <Sparkles className="w-3 h-3" />
+            </button>
+          </div>
+
           {/* Client Notice */}
           <div className="pt-3 border-t border-zinc-800/70 text-[11px] text-zinc-500 leading-relaxed space-y-1.5">
             <div className="flex items-center gap-1.5 text-zinc-400 font-medium">
