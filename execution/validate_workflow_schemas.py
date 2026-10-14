@@ -10,7 +10,7 @@ from utils import BASE_DIR, logger
 W1_NAME = "Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp.json"
 W2_NAME = "Email & linkedin scraping for meeting prep.json"
 
-WORKFLOW_DIR = BASE_DIR / "n8nWworkflows"
+WORKFLOW_DIR = BASE_DIR / "n8nWorkflows" if (BASE_DIR / "n8nWorkflows").exists() else BASE_DIR / "n8nWworkflows"
 
 
 def validate_workflows():
