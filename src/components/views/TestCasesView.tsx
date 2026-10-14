@@ -8,17 +8,13 @@ import {
   RotateCcw,
   CheckCheck,
   Filter,
-  ExternalLink,
   Zap,
   Activity,
-  Send,
-  Calendar,
-  Lock,
   Sparkles
 } from 'lucide-react';
 
 export const TestCasesView: React.FC = () => {
-  const { showToast, setCurrentScreen, triggerCalendarSync } = useApp();
+  const { showToast, setCurrentScreen, syncCalendar } = useApp();
 
   // Load checked test case IDs from localStorage so selections persist
   const [checkedIds, setCheckedIds] = useState<string[]>(() => {
