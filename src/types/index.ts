@@ -6,7 +6,7 @@ export * from './calendar';
 export * from './vault';
 export * from './audit';
 
-export type Screen = 'dashboard' | 'meetings' | 'preparation' | 'connections';
+export type Screen = 'dashboard' | 'meetings' | 'preparation' | 'connections' | 'testcases';
 export type PreparationStatus = 'Prepared' | 'In Progress' | 'Scheduled';
 
 export interface MeetingBrief {
