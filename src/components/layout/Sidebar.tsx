@@ -6,7 +6,6 @@ import {
   Calendar, 
   FileText, 
   Settings, 
-  CheckSquare,
   ExternalLink,
   X,
   LogOut
@@ -26,8 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) =
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'meetings', label: 'Meetings', icon: Calendar, badge: meetingsBadge },
     { id: 'preparation', label: 'Meeting Preparation', icon: FileText },
-    { id: 'connections', label: 'Connections / Setup', icon: Settings },
-    { id: 'testcases', label: 'Test Cases', icon: CheckSquare, badge: 'QA Ready' }
+    { id: 'connections', label: 'Connections / Setup', icon: Settings }
   ];
 
   const handleNavClick = (screen: Screen) => {

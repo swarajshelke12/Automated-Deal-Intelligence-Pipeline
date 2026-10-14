@@ -1,4 +1,4 @@
-export type Screen = 'dashboard' | 'meetings' | 'preparation' | 'connections' | 'testcases';
+export type Screen = 'dashboard' | 'meetings' | 'preparation' | 'connections';
 export type PreparationStatus = 'Prepared' | 'In Progress' | 'Scheduled';
 
 export interface MeetingBrief {

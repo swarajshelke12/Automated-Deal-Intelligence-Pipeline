@@ -7,7 +7,6 @@ import { DashboardView } from './components/views/DashboardView';
 import { MeetingsView } from './components/views/MeetingsView';
 import { MeetingPrepView } from './components/views/MeetingPrepView';
 import { ConnectionsView } from './components/views/ConnectionsView';
-import { TestCasesView } from './components/views/TestCasesView';
 import { HowItWorksModal } from './components/common/HowItWorksModal';
 import { LoginGateView } from './components/auth/LoginGateView';
 import { ExternalLink, CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
@@ -47,8 +46,6 @@ const MainLayout: React.FC = () => {
         return <MeetingPrepView />;
       case 'connections':
         return <ConnectionsView />;
-      case 'testcases':
-        return <TestCasesView />;
       case 'dashboard':
       default:
         return <DashboardView />;

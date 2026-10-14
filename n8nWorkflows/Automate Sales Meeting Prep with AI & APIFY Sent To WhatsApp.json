@@ -6,14 +6,14 @@
         "operation": "getAll",
         "calendar": {
           "__rl": true,
-          "value": "primary",
+          "value": "swarajshelke392@gmail.com",
           "mode": "list",
-          "cachedResultName": "primary"
+          "cachedResultName": "swarajshelke392@gmail.com"
         },
         "limit": 1,
         "options": {
           "timeMin": "={{ $now.toUTC() }}",
-          "timeMax": "={{ $now.toUTC().plus(1, 'hour') }}",
+          "timeMax": "={{ $now.toUTC().plus(2, 'hour') }}",
           "singleEvents": true,
           "orderBy": "startTime"
         }
@@ -28,8 +28,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "googleCalendarOAuth2Api",
-          "name": "Google Calendar account"
+          "id": "21DF6vOqqOllaHHm",
+          "name": "calender swaraj"
         }
       }
     },
@@ -277,8 +277,8 @@
       "name": "Sticky Note13",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -256,
-        512
+        -304,
+        -64
       ],
       "typeVersion": 1
     },
@@ -318,8 +318,8 @@
       "name": "Groq Chat Model",
       "credentials": {
         "groqApi": {
-          "id": "groqApi",
-          "name": "Groq API account"
+          "id": "zIEhPVGfK1pbN5F3",
+          "name": "Groq api"
         }
       }
     },
@@ -338,14 +338,14 @@
       "name": "Groq Chat Model1",
       "credentials": {
         "groqApi": {
-          "id": "groqApi",
-          "name": "Groq API account"
+          "id": "zIEhPVGfK1pbN5F3",
+          "name": "Groq api"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "={{ $env.TELEGRAM_CHAT_ID || 'YOUR_TELEGRAM_CHAT_ID' }}",
+        "chatId": "5999707366",
         "text": "={{ $json.text }}",
         "additionalFields": {
           "appendAttribution": false
@@ -362,33 +362,32 @@
       "webhookId": "b0a8ea74-e31a-4bed-81c8-3fbaa91eb9e8",
       "credentials": {
         "telegramApi": {
-          "id": "telegramApi",
-          "name": "Telegram Bot account"
+          "id": "lrT1Mwrd9zjO04T4",
+          "name": "Swaraj's personal bot"
         }
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
       "position": [
         512,
         720
       ],
-      "id": "3059d587-b703-4e4f-8f09-c94bb94e7042",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "9d52e373-5a7b-4b6d-986e-ec156e7c0261",
+      "name": "Schedule Trigger"
     }
   ],
-  "pinData": {
-    "When clicking ‘Execute workflow’": [
-      {
-        "json": {},
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "Merge": {
       "main": [
@@ -538,7 +537,7 @@
         ]
       ]
     },
-    "When clicking ‘Execute workflow’": {
+    "Schedule Trigger": {
       "main": [
         [
           {
@@ -550,16 +549,16 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false,
+    "availableInMCP": true,
     "timeSavedMode": "fixed",
     "timezone": "Asia/Kolkata",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "4d087f88-8f69-46a6-b1fa-6c4d932dc38e",
+  "versionId": "190aca43-d525-4e4a-895f-0249d05585cf",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ede2a1723ff2c9a76eefabde4eb2ad1dd03725eba54d7dc23a2039bda2e2dc3e"

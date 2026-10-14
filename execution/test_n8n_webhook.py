@@ -56,8 +56,9 @@ def test_webhook():
             return True
     except urllib.error.HTTPError as e:
         err_body = e.read().decode("utf-8", errors="ignore")
-        if "GET request" in err_body:
-            logger.info("[INFO] Webhook is registered for GET requests. Retrying with GET...")
+        # n8n Webhook node registered with GET returns 404 on POST: 'The requested webhook "POST meeting" is not registered.'
+        if "POST meeting" in err_body or "GET request" in err_body or e.code == 404:
+            logger.info("[INFO] POST returned 404/not registered. Retrying with GET endpoint...")
             get_req = urllib.request.Request(
                 webhook_url,
                 headers={"Authorization": auth_header} if auth_header else {},

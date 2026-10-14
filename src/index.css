@@ -13,6 +13,8 @@
     letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
   }
 
   h1, h2, h3, h4 {
@@ -21,13 +23,25 @@
 
   #root {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100dvh;
   }
 
-  /* Apple-inspired tactile response on press */
+  /* Prevent iOS zoom on input focus */
+  input, textarea, select {
+    font-size: 16px;
+  }
+
+  /* Eliminate 300ms tap latency and text selection on controls */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Apple-inspired fluid tactile response on press */
   button:active, a[role="button"]:active {
-    transform: scale(0.98);
-    transition: transform 120ms cubic-bezier(0.2, 0, 0, 1);
+    transform: scale(0.975);
+    transition: transform 100ms cubic-bezier(0.2, 0, 0, 1);
   }
 }
 
