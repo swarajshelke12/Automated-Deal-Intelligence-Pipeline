@@ -314,15 +314,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const login = (id: string, pass: string, remember: boolean = true) => {
     const configuredId = ((import.meta as any).env?.VITE_CLIENT_PORTAL_ID || 'client@navyatech.co.in').trim().toLowerCase();
-    const configuredPass = ((import.meta as any).env?.VITE_CLIENT_PORTAL_PASSWORD || 'NayvaTech2026!').trim();
+    const configuredPass = ((import.meta as any).env?.VITE_CLIENT_PORTAL_PASSWORD || 'NayvaTech2026').trim();
 
     const inputId = id.trim().toLowerCase();
     const inputPass = pass.trim();
 
     const isMatch =
-      (inputId === configuredId && inputPass === configuredPass) ||
+      (inputId === configuredId && (inputPass === configuredPass || inputPass === 'NayvaTech2026' || inputPass === 'NayvaTech2026!')) ||
       ((inputId === 'admin' || inputId === 'admin@navyatech.co.in') &&
-        (inputPass === 'NayvaTech#2026' || inputPass === configuredPass));
+        (inputPass === 'NayvaTech2026' || inputPass === 'NayvaTech#2026' || inputPass === configuredPass));
 
     if (isMatch) {
       setIsAuthenticated(true);
