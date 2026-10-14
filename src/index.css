@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
   }
 
   body {
@@ -10,16 +10,37 @@
     background-color: #09090b;
     color: #f4f4f5;
     overflow-x: hidden;
-    letter-spacing: -0.011em;
+    letter-spacing: -0.012em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.022em;
   }
 
   #root {
     width: 100%;
     min-height: 100vh;
   }
+
+  /* Apple-inspired tactile response on press */
+  button:active, a[role="button"]:active {
+    transform: scale(0.98);
+    transition: transform 120ms cubic-bezier(0.2, 0, 0, 1);
+  }
 }
 
-/* Precision scrollbars */
+/* Translucent frosted glass layer per Apple Design system */
+.glass-surface {
+  background: rgba(18, 18, 24, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Precision dark scrollbars */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -38,3 +59,12 @@
   background: #3f3f46;
 }
 
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

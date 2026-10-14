@@ -1,0 +1,1380 @@
+{
+  "name": "Email & linkedin scraping for meeting prep",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "id": "a3b3b95f-d02c-4ffd-8184-e821b04f3bff",
+      "name": "Get Message Contents",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        336,
+        240
+      ],
+      "webhookId": "fa1d496f-17fa-4e50-bae9-84ca85ed4502",
+      "typeVersion": 2.1,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gmailOAuth2",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2006c806-42db-4457-84c2-35f59ed39018",
+              "name": "date",
+              "type": "string",
+              "value": "={{ $json.date }}"
+            },
+            {
+              "id": "872278d2-b97c-45ba-a9d3-162f154fe7dc",
+              "name": "subject",
+              "type": "string",
+              "value": "={{ $json.subject }}"
+            },
+            {
+              "id": "282f03e9-1d0f-4a17-b9ed-75b44171d4ee",
+              "name": "text",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "id": "9421776c-ff53-4490-b0e1-1e610534ba25",
+              "name": "from",
+              "type": "string",
+              "value": "={{ $json.from.value[0].name }} ({{ $json.from.value[0].address }})"
+            },
+            {
+              "id": "3b6716e8-5582-4da3-ae9d-e8dd1afad530",
+              "name": "to",
+              "type": "string",
+              "value": "={{ $json.to.value[0].name }} ({{ $json.to.value[0].address }})"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "14fe75e7-3507-4cca-862c-84dd86e55e87",
+      "name": "Simplify Emails",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        496,
+        240
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {},
+      "id": "1257f1af-690f-4e24-87ad-5770040f5691",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -816,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "filters": {
+          "sender": "={{ $json.email }}"
+        }
+      },
+      "id": "eec4dd48-4e01-400c-9bb0-cfcb7ae5880f",
+      "name": "Get Last Correspondence",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        0,
+        240
+      ],
+      "webhookId": "b00c960c-3689-4fa1-9f0f-7d6c9479f0c6",
+      "typeVersion": 2.1,
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gmailOAuth2",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 3.2: Fetch Last Email Correspondance\n[Learn more about Gmail node](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.gmail)\n\nFetching our attendee's last email will definitely help the user \"pick up\" from when they last last off. To do this, we'll assume a Gmail user and use the Gmail node to filter messages by the attendee's email address.",
+        "height": 238,
+        "width": 519,
+        "color": 7
+      },
+      "id": "56792970-0f81-4fd2-b113-45b2f5c075bf",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        -96
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3.4 Scraping LinkedIn With [Apify.com](https://www.apify.com?fpr=414q6)\n[Learn more about Apify.com for Web Scraping](https://www.apify.com?fpr=414q6)\n\nTo get the attendee's recent LinkedIn activity, we'll need a webscraper capable of rendering the user's LinkedIn profile. We'll use [Apify.com](https://www.apify.com?fpr=414q6) which is a commercial web scraping service but has a very generous monthly free tier ($5/mo).\n\nWhile Apify offers a number of dedicated LinkedIn scrapers, we'll build our own which works by impersonating our own LinkedIn account using our login cookie - this can be obtained by inspecting network requests when logged into Linkedin. **Add your LinkedIn Cookie to the node above!**",
+        "height": 388,
+        "width": 668,
+        "color": 7
+      },
+      "id": "db6f9734-2c06-4aa3-8c54-04f370f35dcb",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        864
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3.1 Attendee Researcher SubWorkflow\n[Learn more about using Execute Workflow Trigger](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.executeworkflowtrigger/)\n\nThe Attendee Researcher SubWorkflow's aims to collect and summarize both an attendee's last correspondance with the user (if applicable) and the attendee's LinkedIn profile (if available). It uses the router pattern to handle both branches allowing for shorter execution chains. Using the Switch node, this subworkflow is either triggered to fetch emails or scrape LinkedIn but never both simultaneously",
+        "height": 327,
+        "width": 572,
+        "color": 7
+      },
+      "id": "d0319ff9-a299-4e15-8c44-7b6fff8c06d8",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -848,
+        -32
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc4b63a7-ad4d-49ff-9d42-715760910f6a",
+              "name": "linkedin_summary",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5b46198b-9c26-477f-99a0-6a1f43cdc4a7",
+      "name": "Return LinkedIn Success",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2496,
+        464
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
+              "name": "linkedin_summary",
+              "type": "string",
+              "value": "No activities found."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6619fefe-5521-4f65-a3e3-2e28221becad",
+      "name": "Return LinkedIn Error",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        640,
+        832
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a7efc9e-26b0-48c9-83aa-ae989f20b1df",
+              "name": "email_summary",
+              "type": "string",
+              "value": "=No corrosponding response "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "52f8fc22-54e2-4478-a2cc-dfeb810fd195",
+      "name": "Return Email Error",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        336,
+        416
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc4b63a7-ad4d-49ff-9d42-715760910f6a",
+              "name": "email_summary",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a72f3f22-e54d-4081-a34d-b2072aaa32e9",
+      "name": "Return Email Success",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1056,
+        240
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "email"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "email"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "ba71a258-de67-4f61-a24a-33c86bd4c4f5",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "linkedin"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "linkedin"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a0935869-5f2d-4e61-82d9-552d22c1fe4b",
+      "name": "Router",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -640,
+        320
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
+              "name": "linkedin_summary",
+              "type": "string",
+              "value": "No activities found."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1eea6c22-3b66-4093-bb04-8596e3e7f806",
+      "name": "Return LinkedIn Error1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -304,
+        608
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ff11640a-33e4-4695-a62c-7dcab57f0ae5",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "30c0f652-6470-4047-aff3-475f7b1e78bc",
+      "name": "Has Emails?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        160,
+        240
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a7efc9e-26b0-48c9-83aa-ae989f20b1df",
+              "name": "email_summary",
+              "type": "string",
+              "value": "No correspondance found."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "929e81f5-1f23-4ad8-beb2-11221fe9e7b2",
+      "name": "Return Email Error1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -304,
+        432
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "content": "## 3.5: Extract LinkedIn Profile & Recent Activity\n[Learn more about the HTML node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.html)\n\nOnce we have our scraped LinkedIn profile, it's just a simple case of parsing and extracting the relevant sections from the page.\nFor the purpose of our workflow, we'll only need the \"About\" and \"Activity\" sections which we'll pull out of the page using a series of HTML nodes. Feel free to extract other sections to suit your needs! Once extracted, we'll combine the about and activities data in preparation of sending it to our LLM.",
+        "height": 284,
+        "width": 683,
+        "color": 7
+      },
+      "id": "bb7e92c9-0859-4f7c-b10c-48df4d0f951c",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        1088
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "sections",
+        "include": "allOtherFields",
+        "options": {
+          "destinationFieldName": "data"
+        }
+      },
+      "id": "372d35cc-47f0-4080-a4cf-452dac1a80db",
+      "name": "Sections To List",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        768,
+        608
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4354c00-cc1a-4a55-8b44-6ba4854cc6ba",
+              "name": "linkedin_profile_url",
+              "type": "string",
+              "value": "={{ $json.linkedin_url }}"
+            },
+            {
+              "id": "4888db89-2573-4246-8ab9-c106a7fe5f38",
+              "name": "linkedin_cookies",
+              "type": "string",
+              "value": "={{ $env.LINKEDIN_COOKIE || 'YOUR_LI_AT_COOKIE' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "12af8a71-7469-4539-b0ae-28f65e763ac0",
+      "name": "Set LinkedIn Cookie",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -16,
+        688
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "content": "### Be aware of LinkedIn T&Cs!\nFor production, you may want to consider not using your main Linkedin account if you can help it!",
+        "height": 190,
+        "width": 308,
+        "color": 3
+      },
+      "id": "77e8513d-850d-4c53-91ac-df6ba390b5ab",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        816
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "1382e335-bfae-4665-a2ee-a05496a7b463",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.email }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "97bca4ad-3b7a-4af8-ab74-2106b035ea82",
+      "name": "Has Email Address?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -464,
+        320
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "1382e335-bfae-4665-a2ee-a05496a7b463",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.linkedin_url }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "62d5fd6c-7fd0-4965-9f6f-fddd374bb856",
+      "name": "Has LinkedIn URL?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -464,
+        496
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "activity",
+        "options": {}
+      },
+      "id": "0385b332-7bba-4379-add6-7e08c376a639",
+      "name": "Activities To Array",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        1744,
+        720
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "activity",
+        "options": {}
+      },
+      "id": "2c4d11bd-1bc6-4d83-b0a0-8248f62c47c0",
+      "name": "Activities To List",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        1424,
+        720
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://api.apify.com/v2/acts/apify~web-scraper/run-sync-get-dataset-items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n \"startUrls\": [\n {\n \"url\": \"{{ $json.linkedin_profile_url }}\",\n \"method\": \"GET\"\n }\n ],\n \"initialCookies\": [\n {\n \"name\": \"li_at\",\n \"value\": \"{{ $json.linkedin_cookies}}\",\n \"domain\": \".www.linkedin.com\"\n }\n ],\n \"breakpointLocation\": \"NONE\",\n \"browserLog\": false,\n \"closeCookieModals\": false,\n \"debugLog\": false,\n \"downloadCss\": false,\n \"downloadMedia\": false,\n \"excludes\": [\n {\n \"glob\": \"/**/*.{png,jpg,jpeg,pdf}\"\n }\n ],\n \"headless\": true,\n \"ignoreCorsAndCsp\": false,\n \"ignoreSslErrors\": false,\n \n \"injectJQuery\": true,\n \"keepUrlFragments\": false,\n \"linkSelector\": \"a[href]\",\n \"maxCrawlingDepth\": 1,\n \"maxPagesPerCrawl\": 1,\n \"maxRequestRetries\": 1,\n \"maxResultsPerCrawl\": 1,\n \"pageFunction\": \"// The function accepts a single argument: the \\\"context\\\" object.\\n// For a complete list of its properties and functions,\\n// see https://apify.com/apify/web-scraper#page-function \\nasync function pageFunction(context) {\\n\\n await new Promise(res => { setTimeout(res, 6000) });\\n // This statement works as a breakpoint when you're trying to debug your code. Works only with Run mode: DEVELOPMENT!\\n // debugger; \\n\\n // jQuery is handy for finding DOM elements and extracting data from them.\\n // To use it, make sure to enable the \\\"Inject jQuery\\\" option.\\n const $ = context.jQuery;\\n const title = $('title').first().text();\\n\\n // Clone the body to avoid modifying the original content\\n const bodyClone = $('body').clone();\\n bodyClone.find('iframe, img, script, style, object, embed, noscript, svg, video, audio').remove();\\n const body = bodyClone.html();\\n\\n // Return an object with the data extracted from the page.\\n // It will be stored to the resulting dataset.\\n return {\\n url: context.request.url,\\n title,\\n body\\n };\\n}\",\n \"postNavigationHooks\": \"// We need to return array of (possibly async) functions here.\\n// The functions accept a single argument: the \\\"crawlingContext\\\" object.\\n[\\n async (crawlingContext) => {\\n // ...\\n },\\n]\",\n \"preNavigationHooks\": \"// We need to return array of (possibly async) functions here.\\n// The functions accept two arguments: the \\\"crawlingContext\\\" object\\n// and \\\"gotoOptions\\\".\\n[\\n async (crawlingContext, gotoOptions) => {\\n // ...\\n },\\n]\\n\",\n \"proxyConfiguration\": {\n \"useApifyProxy\": true\n },\n \"runMode\": \"PRODUCTION\",\n \n \"useChrome\": false,\n \"waitUntil\": [\n \"domcontentloaded\"\n ],\n \"globs\": [],\n \"pseudoUrls\": [],\n \"proxyRotation\": \"RECOMMENDED\",\n \"maxConcurrency\": 50,\n \"pageLoadTimeoutSecs\": 60,\n \"pageFunctionTimeoutSecs\": 60,\n \"maxScrollHeightPixels\": 5000,\n \"customData\": {}\n}",
+        "options": {}
+      },
+      "id": "7ecee6ad-8bd3-4079-8ddd-5868d19e3051",
+      "name": "APIFY Web Scraper",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        176,
+        688
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "apifyApi",
+          "name": "Apify API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "activity",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "header",
+              "cssSelector": ".feed-mini-update-optional-navigation-context-wrapper",
+              "returnValue": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "key": "url",
+              "cssSelector": ".feed-mini-update-optional-navigation-context-wrapper",
+              "returnValue": "attribute",
+              "attribute": "href"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".inline-show-more-text--is-collapsed"
+            },
+            {
+              "key": "num_reactions",
+              "cssSelector": ".social-details-social-counts__reactions-count"
+            },
+            {
+              "key": "num_comments",
+              "cssSelector": ".social-details-social-counts__comments"
+            },
+            {
+              "key": "num_reposts",
+              "cssSelector": ".social-details-social-counts__item--truncate-text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ec5ebf2-6766-4216-8531-312ccf37f2c4",
+      "name": "Get Activity Details",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        1584,
+        720
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": "h2, h3"
+            },
+            {
+              "key": "content",
+              "cssSelector": "body",
+              "returnValue": "html"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f2542181-5de9-4ca7-8e69-ea0139046ade",
+      "name": "Get Sections",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        928,
+        608
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "79d7943f-45a5-456c-a15b-cef53903409d",
+              "name": "html",
+              "type": "string",
+              "value": "={{\n  $input.all().find(\n    item => (item.json.title || '').toLowerCase().includes('about')\n  )?.json.content || ''\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0f86d97b-906d-45d2-bb5b-7dfc13257e58",
+      "name": "Get About Section",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1104,
+        464
+      ],
+      "executeOnce": true,
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "79d7943f-45a5-456c-a15b-cef53903409d",
+              "name": "html",
+              "type": "string",
+              "value": "={{\n  $input.all().find(\n    item => (item.json.title || '').toLowerCase().includes('activity')\n  )?.json.content || ''\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ed6f682c-05b3-49e5-82dd-c69ab04f1d84",
+      "name": "Get Activity Section",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1104,
+        720
+      ],
+      "executeOnce": true,
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "activity",
+              "cssSelector": ".profile-creator-shared-feed-update__mini-container",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a55051a0-a7f0-4d78-90ef-49d5a3e7dc09",
+      "name": "Extract Activities",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        1264,
+        720
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "3f5ddf8c-8bde-4e46-90bb-1ee121009ee3",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1936,
+        448
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "3861abc7-7699-4459-b983-0c8b33e090b5",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.body }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eba1e763-3a38-483e-a9b0-898e98fc73e9",
+      "name": "Is Scrape Successful?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        368,
+        688
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "about",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7ec18734-013b-4c7c-a850-0382debb02eb",
+      "name": "Extract About",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        1264,
+        464
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "content": "## 3.6 Summarize LinkedIn For Attendee\n[Read more about the Basic LLM node](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.chainllm)\n\nFinally, we'll use the Basic LLM node to summarize our attendee's LinkedIn profile and recent activity. Our goal here is to identify and send back interesting tidbits of information which may be relevant to the meeting as well as inform the user. Should you require different criteria, simply edit the summarizer to get the response you need.",
+        "height": 292,
+        "width": 508,
+        "color": 7
+      },
+      "id": "68ecf5c4-fc21-4761-9361-14948d5a1b3b",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1760,
+        1056
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3.3: Summarize Correspondance For Attendee\n[Read more about the Basic LLM node](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.chainllm)\n\nNext, we'll generate a shorter version of the email(s) using the Basic LLM node - useful if the email was part of a large chain. The goal here is, if applicable, to remind the user of the conversion with this attendee and highlight any expectations which might be set before going into the meeting.",
+        "height": 245,
+        "width": 594,
+        "color": 7
+      },
+      "id": "5ca288ed-1c0b-42b1-a800-93a8ce64d903",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        -112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=from: {{ $json.from }}\nto: {{ $json.to }}\ndate: {{ $json.date }}\nsubject: {{ $json.subject }}\ntext:\n{{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are helping the \"to\" user recap the last correspondance they had in this email thread. Summarize succiently what was discussed, changed or agreed to help the user prepare for their upcoming meeting."
+            }
+          ]
+        }
+      },
+      "id": "964e489d-3009-42bf-b4df-b93b9db8e26e",
+      "name": "Correspondance Recap Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        720,
+        240
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=### name\n{{ $('Extract Profile Metadata').item.json.name }}\n### about\n\"{{ $('Extract Profile Metadata').item.json.tagline }}\"\n{{ $json.about.replaceAll('\\n', ' ')}}\n### recent activity\n{{\n$json.activity.map((item, idx) => {\n return [\n item.header.replace('View full post.', ''),\n `(${item.url})`,\n ' - ',\n item.content.replaceAll('\\n', ' ').replaceAll('…show more', '')\n ].join(' ')\n}).join('\\n---\\n')\n}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Summarize briefly the person and their recent activities as seen in the given feed and highlight noteworthy awards or achievements which make for good talking points."
+            }
+          ]
+        }
+      },
+      "id": "b2f353d2-d381-4629-90d8-d951d475413b",
+      "name": "LinkedIn Summarizer Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        2096,
+        448
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-safeguard-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        720,
+        400
+      ],
+      "id": "343d0512-c65e-4a10-828a-e8cba0b54c24",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "groqApi",
+          "name": "Groq API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-safeguard-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        672
+      ],
+      "id": "aaf00628-bad4-4bdd-868a-eb559ab77e6e",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "groqApi",
+          "name": "Groq API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "body",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "name",
+              "cssSelector": "[data-view-name=\"profile-top-card\"] h2"
+            },
+            {
+              "key": "tagline",
+              "cssSelector": "[data-view-name=\"profile-top-card\"] p._7630dc1e"
+            },
+            {
+              "key": "location",
+              "cssSelector": "div:has(> p > a[href*=\"/overlay/contact-info/\"]) > p:first-child"
+            },
+            {
+              "key": "num_connections",
+              "cssSelector": "[data-view-name=\"profile-top-card-view-all-connections\"] p"
+            },
+            {
+              "key": "num_followers",
+              "cssSelector": "[data-view-name=\"profile-top-card-view-all-followers\"] p"
+            },
+            {
+              "key": "sections",
+              "cssSelector": "main > sections",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "602a98f9-82f4-48fb-9e56-eecfc72e6b52",
+      "name": "Extract Profile Metadata1",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        624,
+        1152
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "body",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "name",
+              "cssSelector": "h1"
+            },
+            {
+              "key": "tagline",
+              "cssSelector": ".pv-text-details__left-panel--full-width .text-body-medium"
+            },
+            {
+              "key": "location",
+              "cssSelector": ".pv-text-details__left-panel--full-width + div .text-body-small"
+            },
+            {
+              "key": "num_connections",
+              "cssSelector": "a[href=\"/mynetwork/invite-connect/connections/\"]"
+            },
+            {
+              "key": "num_followers",
+              "cssSelector": "a[href=\"https://www.linkedin.com/feed/followers/\"]"
+            },
+            {
+              "key": "sections",
+              "cssSelector": "section[data-view-name]",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1173b1bb-4b9f-457a-b0f3-4b405abda652",
+      "name": "Extract Profile Metadata",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        576,
+        608
+      ],
+      "typeVersion": 1.2
+    }
+  ],
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "route": "linkedin",
+          "name": "Alex Mercer",
+          "email": "alex.mercer@enterprise.io",
+          "linkedin_url": "https://www.linkedin.com/in/alex-mercer-cto"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Get Message Contents": {
+      "main": [
+        [
+          {
+            "node": "Simplify Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simplify Emails": {
+      "main": [
+        [
+          {
+            "node": "Correspondance Recap Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Last Correspondence": {
+      "main": [
+        [
+          {
+            "node": "Has Emails?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router": {
+      "main": [
+        [
+          {
+            "node": "Has Email Address?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has LinkedIn URL?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Emails?": {
+      "main": [
+        [
+          {
+            "node": "Get Message Contents",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Email Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sections To List": {
+      "main": [
+        [
+          {
+            "node": "Get Sections",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set LinkedIn Cookie": {
+      "main": [
+        [
+          {
+            "node": "APIFY Web Scraper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Email Address?": {
+      "main": [
+        [
+          {
+            "node": "Get Last Correspondence",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Email Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has LinkedIn URL?": {
+      "main": [
+        [
+          {
+            "node": "Set LinkedIn Cookie",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return LinkedIn Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Activities To Array": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Activities To List": {
+      "main": [
+        [
+          {
+            "node": "Get Activity Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "APIFY Web Scraper": {
+      "main": [
+        [
+          {
+            "node": "Is Scrape Successful?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Activity Details": {
+      "main": [
+        [
+          {
+            "node": "Activities To Array",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Sections": {
+      "main": [
+        [
+          {
+            "node": "Get About Section",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Activity Section",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get About Section": {
+      "main": [
+        [
+          {
+            "node": "Extract About",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Activity Section": {
+      "main": [
+        [
+          {
+            "node": "Extract Activities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Activities": {
+      "main": [
+        [
+          {
+            "node": "Activities To List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Summarizer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Scrape Successful?": {
+      "main": [
+        [
+          {
+            "node": "Extract Profile Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return LinkedIn Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract About": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Correspondance Recap Agent": {
+      "main": [
+        [
+          {
+            "node": "Return Email Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Summarizer Agent": {
+      "main": [
+        [
+          {
+            "node": "Return LinkedIn Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Correspondance Recap Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "LinkedIn Summarizer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Profile Metadata1": {
+      "main": [
+        []
+      ]
+    },
+    "Extract Profile Metadata": {
+      "main": [
+        [
+          {
+            "node": "Sections To List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ea8dbeef-6be9-47d0-816b-20126b90db23",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ede2a1723ff2c9a76eefabde4eb2ad1dd03725eba54d7dc23a2039bda2e2dc3e"
+  },
+  "nodeGroups": [],
+  "id": "90nr9TEfn5wnaJBk",
+  "tags": []
+}

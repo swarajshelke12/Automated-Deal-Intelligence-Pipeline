@@ -30,6 +30,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Runtime & temp
+.tmp/
 *.local
 *.tmp
 *.temp

@@ -30,9 +30,7 @@ export const DashboardView: React.FC = () => {
 
   const preparedCount = meetings.filter((m) => m.status === 'Prepared').length;
   const inProgressCount = meetings.filter((m) => m.status === 'In Progress').length;
-  const isLocked =
-    credentials.status === 'Locked & Expired' ||
-    (credentials.expiresAtTimestamp ? Date.now() >= credentials.expiresAtTimestamp : false);
+  const isLocked = credentials.status === 'Locked & Expired';
   const isConfigured =
     (credentials.status === 'Configured' || credentials.status === 'Submitted') && !isLocked;
 

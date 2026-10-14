@@ -1,0 +1,570 @@
+{
+  "name": "Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "primary",
+          "mode": "list",
+          "cachedResultName": "primary"
+        },
+        "limit": 1,
+        "options": {
+          "timeMin": "={{ $now.toUTC() }}",
+          "timeMax": "={{ $now.toUTC().plus(1, 'hour') }}",
+          "singleEvents": true,
+          "orderBy": "startTime"
+        }
+      },
+      "id": "42d49eba-8250-4477-aaef-1229ae56f36e",
+      "name": "Check For Upcoming Meetings",
+      "type": "n8n-nodes-base.googleCalendar",
+      "position": [
+        736,
+        720
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "googleCalendarOAuth2Api",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=start: {{ $json.start.dateTime }}\nmeeting url: {{ $json.hangoutLink }}\nsummary: {{ $json.summary }}\ndescription: {{ $json.description }}\norganiser: {{ $json.organizer.displayName }} ({{ $json.organizer.email }})\nattendees: {{ $json.attendees.filter(item => !item.organizer).map(item => item.email).join(',') }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"attendees\": {\n \"type\": \"array\",\n \"description\": \"list of attendees excluding the meeting organiser\",\n \"items\": {\n\t\t\t\"type\": \"object\",\n\t\t\t\"properties\": {\n\t\t\t \"name\": { \"type\": \"string\" },\n \"email\": { \"type\": \"string\" },\n \"linkedin_url\": { \"type\": \"string\" }\n\t\t\t}\n }\n\t\t}\n\t}\n}",
+        "options": {
+          "systemPromptTemplate": "You are an expert extraction algorithm. Try to link any information found in the description to help fill in the attendee details.\nIf you do not know the value of an attribute asked to extract, you may omit the attribute's value."
+        }
+      },
+      "id": "39cbc3d3-52cd-4448-a4e4-7b266ac2de11",
+      "name": "Extract Attendee Information",
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "position": [
+        928,
+        720
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 1. Periodically Search For Upcoming Meetings\n[Read about the Scheduled Trigger](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger)\n\nLet's use the Scheduled Trigger node to trigger our Assistant to notify about upcoming meetings. Here, we'll set it for 1 hour intervals to check for meetings scheduled in our Google Calendar. You may need to play with the intervals and frequency depending on how many meetings you typically have.",
+        "height": 641,
+        "width": 377,
+        "color": 7
+      },
+      "id": "66668648-46f3-45f3-b7ee-0caa327e88c6",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        464,
+        -64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2. Extract Attendee Details From Invite\n[Learn more about the Information Extractor node](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.information-extractor/)\n\nOnce we have our upcoming meeting, it'll be nice to prepare for it by reminding the user what the meeting is about and some context with the attendees. This will be the goal this template and of our assistant! However, first we'll need to extract some contact information of the attendees to do so.\n\nFor this demonstration, we'll assume that attendee's email and LinkedIn profile URLs are included in the meeting invite. We'll extract this information for each attendee using the Information Extractor node. This convenient node uses AI to parse and extract which saves us from writing complex pattern matching code otherwise.\n\nIn your own scenario, feel free to use your CRM to get this information instead.",
+        "height": 638,
+        "width": 576,
+        "color": 7
+      },
+      "id": "c9d9dfba-28ef-47dd-9918-47f7165008df",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        -64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3. Fetch Recent Correspondance & LinkedIn Activity\n[Learn more about the Execute Workflow node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.executeworkflow)\n\nAs both email fetching and LinkedIn scraping actions are quite complex, we'll split them out as subworkflow executions. Doing so (in my honest opinion), helps with development and maintainability of the template. Here, we'll make perform the research for all applicable attendees by making 2 calls to the subworkflow and merging them back into a single node at the end.\n\nHead over to the subworkflow (see below - step 3a) to see how we pull the summaries from Gmail and LinkedIn.",
+        "height": 639,
+        "width": 636,
+        "color": 7
+      },
+      "id": "ecd7d042-92a8-414f-bee0-969c96f5b622",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1472,
+        -64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 4. Generate Pre-Meeting Notification\n[Read more about the Basic LLM node](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.chainllm)\n\nNow that we have (1) our upcoming meeting details and (2) recent email and/or Linkedin summaries about our attendee, let's feed them into our LLM node to generate the best pre-meeting notification ever seen! Of course, we'll need to keep it short as we intend to send this notification via WhatsApp message but should you choose to use another channel such as email, feel free to adjust the length of the message which suits.",
+        "height": 630,
+        "width": 450,
+        "color": 7
+      },
+      "id": "7afebe79-d732-4b3e-b2f2-470000d8240f",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2144,
+        -64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 5. Send Notification via WhatsApp\n[Learn more about the WhatsApp node](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.whatsapp)\n\nThe WhatsApp node is a super convenient way to send messages to WhatsApp which is one of the many messaging apps supported by n8n out of the box. Not using WhatsApp? Simply swap this our for Twilio, Telegram, Slack and others.",
+        "height": 630,
+        "width": 403,
+        "color": 7
+      },
+      "id": "aafad60f-f7da-44f6-8637-b55f3a35c90c",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2624,
+        -64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ Object.assign({ \"route\": \"email\" }, $json) }}",
+        "options": {}
+      },
+      "id": "998af378-2ea1-4a8a-b829-74c4b74d7346",
+      "name": "Set Route Email",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1472,
+        656
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ Object.assign({ \"route\": \"linkedin\" }, $json) }}",
+        "options": {}
+      },
+      "id": "24a73de0-bfbc-497e-9582-df0bdc9e6ef5",
+      "name": "Set Route Linkedin",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1472,
+        816
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.attendees",
+        "options": {}
+      },
+      "id": "bfc83b63-f4fb-4d3b-8546-46592458344f",
+      "name": "Attendees to List",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        1248,
+        720
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ Object.assign({}, $('Attendees to List').item.json, $json) }}",
+        "options": {}
+      },
+      "id": "f1eba7bf-e7d2-4e1e-bd03-f5a249eb6c45",
+      "name": "Merge Attendee with Summaries",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2032,
+        736
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "90nr9TEfn5wnaJBk",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/90nr9TEfn5wnaJBk",
+          "cachedResultName": "Email & linkedin scraping"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "ace0dd28-5de0-46a2-b4e7-0e1e94335770",
+      "name": "Get Correspondance",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [
+        1664,
+        656
+      ],
+      "typeVersion": 1.1,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "5ce47376-37d5-4170-81e0-2d0d4b0a2ffe",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1872,
+        736
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "81ad36b5-3d80-4e90-9d21-a59a2eed4b5d",
+      "name": "Aggregate Attendees",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        2192,
+        736
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "90nr9TEfn5wnaJBk",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/90nr9TEfn5wnaJBk",
+          "cachedResultName": "Email & linkedin scraping"
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "f287db41-7efc-4d7b-aca4-6db49c746776",
+      "name": "Get LinkedIn Profile & Activity",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [
+        1664,
+        816
+      ],
+      "typeVersion": 1.1,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Try It Out!\n\n### This workflow builds an AI meeting assistant who sends information-dense pre-meeting notifications for a user's upcoming meetings. This template is ideal for busy professional who is constantly on the move and wants to save time and make an impression.\n\n### How It Works\n* A scheduled trigger fires hourly and checks for upcoming meetings within the hour.\n* When found, a search for last correspondence and LinkedIn profile + recent activity is performed for each attendee.\n* Using both available correspondance and/or Linkedin profile, an AI/LLM is used to summarize this information and generate a short notification message which should help the user prepare for the meeting.\n* The notification is finally sent to the user's WhatsApp.\n\n### Need Help?\nJoin the [Discord](https://discord.com/invite/XPKeKXeB7d) or ask in the [Forum](https://community.n8n.io/)!\n\nHappy Hacking!",
+        "height": 636,
+        "width": 709
+      },
+      "id": "19f92347-794d-42aa-91f8-d0dd43cacb3d",
+      "name": "Sticky Note13",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=meeting date: {{ $('Check For Upcoming Meetings').item.json.start.dateTime }}\nmeeting url: {{ $('Check For Upcoming Meetings').item.json.hangoutLink }}\nmeeting summary: {{ $('Check For Upcoming Meetings').first().json.summary }}\nmeeting description: {{ $('Check For Upcoming Meetings').item.json.description }}\nmeeting with: {{ $json.attendees.map(item => item.name).join(',') }}\n---\n{{\n$json.attendees.map(item => {\n return\n`attendee name: ${item.name}\n${item.name}'s last correspondance: ${item.email_summary.replaceAll('\\n', ' ') || `We have not had any correspondance with ${item.name}`}\n${item.name}'s linkedin profile: ${item.linkedin_summary.replaceAll('\\n', ' ') || `We were unable to find the linkedin profile for ${$json.name}`}\n`\n}).join('\\n---\\n')\n}}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a personal meeing assistant.\nYou are helping to remind user of an upcoming meeting with {{ $json.attendees.map(item => item.name).join(',') }} (aka \"the attendee(s)\"}. You will structure your notification using the following guidance:\n1. Start by providing the meeting summary, mentioning the date, with whom and providing the meeting link.\n2. For each attendee, give a short bullet point summary of their last correspondance. Assess if the correspondance has any relevance to the meeting and if so, identify any important todos or items which should be mentioned during the meeting. Additionally, give a short bullet point summary of attendee's recent activity which makes for good talking points. These need not be relevant to the meeting.\n\nWrite your response in a casual tone as if sending a SMS message to the user. USe bullet points where appropriate."
+            }
+          ]
+        }
+      },
+      "id": "70a61a99-3280-4e82-a3c3-83e891b055b6",
+      "name": "Attendee Research Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        2368,
+        736
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        928,
+        912
+      ],
+      "id": "d25ca1f4-196d-4066-a5bc-049d85e4b4ff",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "groqApi",
+          "name": "Groq API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2368,
+        912
+      ],
+      "id": "7292c1ce-d5d1-4241-9af4-741e0309207e",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "groqApi",
+          "name": "Groq API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID || 'YOUR_TELEGRAM_CHAT_ID' }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2736,
+        736
+      ],
+      "id": "4958df01-76bd-454f-9759-bd24d37c643e",
+      "name": "Send a text message",
+      "webhookId": "b0a8ea74-e31a-4bed-81c8-3fbaa91eb9e8",
+      "credentials": {
+        "telegramApi": {
+          "id": "telegramApi",
+          "name": "Telegram Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        512,
+        720
+      ],
+      "id": "3059d587-b703-4e4f-8f09-c94bb94e7042",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {},
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge Attendee with Summaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Route Email": {
+      "main": [
+        [
+          {
+            "node": "Get Correspondance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attendees to List": {
+      "main": [
+        [
+          {
+            "node": "Set Route Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Route Linkedin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Correspondance": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Route Linkedin": {
+      "main": [
+        [
+          {
+            "node": "Get LinkedIn Profile & Activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Attendees": {
+      "main": [
+        [
+          {
+            "node": "Attendee Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attendee Research Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check For Upcoming Meetings": {
+      "main": [
+        [
+          {
+            "node": "Extract Attendee Information",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Attendee Information": {
+      "main": [
+        [
+          {
+            "node": "Attendees to List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Attendee with Summaries": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Attendees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get LinkedIn Profile & Activity": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extract Attendee Information",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Attendee Research Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Check For Upcoming Meetings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "4d087f88-8f69-46a6-b1fa-6c4d932dc38e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ede2a1723ff2c9a76eefabde4eb2ad1dd03725eba54d7dc23a2039bda2e2dc3e"
+  },
+  "nodeGroups": [],
+  "id": "DxPA1OGu39FxU9os",
+  "tags": []
+}

@@ -30,30 +30,36 @@ export interface Meeting {
  * "Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp"
  *
  * Google Integration (OAuth2 + API access)
- *   — Client ID & Secret     : Google Cloud OAuth2 app credentials
+ *   — Client ID & Secret     : Google Cloud OAuth2 app credentials (Calendar + Gmail)
  *
- * OpenAI API Key             — 4x LLM chain nodes (gpt-4o-2024-08-06)
- * Apify API Key              — APIFY Web Scraper node (LinkedIn scraping)
- * WhatsApp Business Cloud    — Business ID + Access Token
+ * AI Intelligence Key        — Groq (gsk_...) or OpenAI (sk-...) for LLM chain nodes:
+ *                              * Attendee Research Agent (openai/gpt-oss-20b)
+ *                              * Correspondance Recap Agent (openai/gpt-oss-safeguard-20b)
+ *                              * LinkedIn Summarizer Agent
+ * Apify API Key              — APIFY Web Scraper node (run-sync dataset extraction)
+ * LinkedIn Cookie (li_at)    — Session cookie for authenticated LinkedIn profile scraping
+ * WhatsApp Business Cloud    — Meta Phone Number ID + Permanent Access Token
+ * Telegram Bot (Optional)    — Alternately configured in workflow (chatId: 5999707366)
  */
 export interface WorkflowCredentials {
   // ── Google Integration ──────────────────────────────────────────────────────
-  googleClientId: string;       // Google Cloud OAuth2 Client ID
+  googleClientId: string;       // Google Cloud OAuth2 Client ID (Calendar & Gmail)
   googleClientSecret: string;   // Google Cloud OAuth2 Client Secret
+  googleAccountEmail?: string;  // Authorized Google account email
 
-  // ── OpenAI ─────────────────────────────────────────────────────────────────
-  openAiApiKey: string;
+  // ── AI Engine (Groq / OpenAI) ──────────────────────────────────────────────
+  openAiApiKey: string;         // Groq API Key (gsk_...) or OpenAI API Key (sk-...)
+  aiProvider?: 'groq' | 'openai';
 
-  // ── Apify ──────────────────────────────────────────────────────────────────
-  apifyApiKey: string;
-
-  // ── LinkedIn Session Cookie ────────────────────────────────────────────────
+  // ── Apify & LinkedIn ────────────────────────────────────────────────────────
+  apifyApiKey: string;          // Apify API Token (apify_api_...)
   linkedInCookie?: string;      // li_at session cookie from browser DevTools for Apify scraper
 
-  // ── WhatsApp Business Cloud ────────────────────────────────────────────────
-  whatsAppBusinessId: string;   // Meta WhatsApp Phone Number ID (or Business Account ID)
-  whatsAppAccessToken: string;  // Permanent / long-lived access token from Meta
-  whatsAppRecipientPhone?: string; // Recipient WhatsApp phone number with country code (e.g. +919876543210)
+  // ── WhatsApp & Dispatch ────────────────────────────────────────────────────
+  whatsAppBusinessId: string;   // Meta WhatsApp Phone Number ID (10-20 digits)
+  whatsAppAccessToken: string;  // Permanent / long-lived access token from Meta (EAA...)
+  whatsAppRecipientPhone?: string; // Recipient WhatsApp phone number with country code
+  telegramChatId?: string;      // Optional Telegram Chat ID (e.g. 5999707366)
 
   // ── Status & Security Metadata ─────────────────────────────────────────────
   status: 'Not Configured' | 'Submitted' | 'Configured' | 'Locked & Expired';

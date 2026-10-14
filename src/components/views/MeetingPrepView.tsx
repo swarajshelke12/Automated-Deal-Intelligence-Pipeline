@@ -11,9 +11,9 @@ import {
   Copy,
   Check,
   ExternalLink,
-  MessageSquare,
-  Linkedin
+  MessageSquare
 } from 'lucide-react';
+import { LinkedInIcon } from '../common/Icons';
 
 
 export const MeetingPrepView: React.FC = () => {
