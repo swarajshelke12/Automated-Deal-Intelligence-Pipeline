@@ -1,14 +1,13 @@
-import { describe, it, expect } from 'vitest';
 import { isGoogleClientIdValid, isGoogleSecretValid } from '../utils/credentialValidators';
 
-describe('Credential Validators', () => {
-  it('validates google client id format', () => {
-    expect(isGoogleClientIdValid('sample-id.apps.googleusercontent.com')).toBe(true);
-    expect(isGoogleClientIdValid('invalid-id')).toBe(false);
-  });
+function assert(condition: boolean, msg: string) {
+  if (!condition) throw new Error(`Assertion failed: ${msg}`);
+}
 
-  it('validates google client secret format', () => {
-    expect(isGoogleSecretValid('GOCSPX-ValidSecret123')).toBe(true);
-    expect(isGoogleSecretValid('wrong-secret')).toBe(false);
-  });
-});
+export function testCredentialValidators(): boolean {
+  assert(isGoogleClientIdValid('sample-id.apps.googleusercontent.com'), 'valid Google client ID');
+  assert(!isGoogleClientIdValid('invalid-id'), 'invalid Google client ID');
+  assert(isGoogleSecretValid('GOCSPX-ValidSecret123'), 'valid Google secret');
+  assert(!isGoogleSecretValid('wrong-secret'), 'invalid Google secret');
+  return true;
+}

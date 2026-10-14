@@ -1,10 +1,11 @@
-import { describe, it, expect } from 'vitest';
+function assert(condition: boolean, msg: string) {
+  if (!condition) throw new Error(`Assertion failed: ${msg}`);
+}
 
-describe('Auth Gatekeeper Policy', () => {
-  it('enforces non-empty client id and password', () => {
-    const id = 'client@navyatech.co.in';
-    const pass = 'NayvaTech2026!';
-    expect(id.length).toBeGreaterThan(5);
-    expect(pass.length).toBeGreaterThan(8);
-  });
-});
+export function testAuthGatekeeper(): boolean {
+  const id = 'client@navyatech.co.in';
+  const pass = 'NayvaTech2026!';
+  assert(id.length > 5, 'Client ID length policy');
+  assert(pass.length > 8, 'Password length policy');
+  return true;
+}
