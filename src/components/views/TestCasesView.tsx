@@ -100,7 +100,7 @@ export const TestCasesView: React.FC = () => {
       setCurrentScreen('connections');
       showToast('Navigated to WhatsApp dispatch test panel in Connections.', 'info');
     } else if (actionType === 'simulate-prep') {
-      await triggerCalendarSync();
+      await syncCalendar();
       setCurrentScreen('preparation');
       showToast('Triggered calendar sync and opened AI Meeting Preparation view.', 'success');
       if (caseId && !checkedIds.includes(caseId)) {
