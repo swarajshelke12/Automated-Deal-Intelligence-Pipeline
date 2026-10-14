@@ -91,7 +91,7 @@ export const LoginGateView: React.FC = () => {
                 type="text"
                 value={clientId}
                 onChange={(e) => setClientId(e.target.value)}
-                placeholder="e.g. client@navyatech.co.in"
+                placeholder="e.g. client"
                 autoComplete="username"
                 className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500/80 rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 transition-all font-mono"
               />

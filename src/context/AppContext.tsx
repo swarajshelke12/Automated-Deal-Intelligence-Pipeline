@@ -313,16 +313,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const login = (id: string, pass: string, remember: boolean = true) => {
-    const configuredId = ((import.meta as any).env?.VITE_CLIENT_PORTAL_ID || 'client@navyatech.co.in').trim().toLowerCase();
-    const configuredPass = ((import.meta as any).env?.VITE_CLIENT_PORTAL_PASSWORD || 'NayvaTech2026').trim();
+    const configuredId = ((import.meta as any).env?.VITE_CLIENT_PORTAL_ID || 'client').trim().toLowerCase();
+    const configuredPass = ((import.meta as any).env?.VITE_CLIENT_PORTAL_PASSWORD || '1234').trim();
 
     const inputId = id.trim().toLowerCase();
     const inputPass = pass.trim();
 
     const isMatch =
-      (inputId === configuredId && (inputPass === configuredPass || inputPass === 'NayvaTech2026' || inputPass === 'NayvaTech2026!')) ||
+      // 1. Direct simple match (client / 1234) or matches current env
+      (inputId === configuredId && inputPass === configuredPass) ||
+      (inputId === 'client' && (inputPass === '1234' || inputPass === 'NayvaTech2026')) ||
+      (inputId === 'client@navyatech.co.in' && (inputPass === '1234' || inputPass === 'NayvaTech2026')) ||
+      // 2. Admin access
       ((inputId === 'admin' || inputId === 'admin@navyatech.co.in') &&
-        (inputPass === 'NayvaTech2026' || inputPass === 'NayvaTech#2026' || inputPass === configuredPass));
+        (inputPass === 'admin' || inputPass === '1234' || inputPass === 'NayvaTech2026' || inputPass === configuredPass));
 
     if (isMatch) {
       setIsAuthenticated(true);
