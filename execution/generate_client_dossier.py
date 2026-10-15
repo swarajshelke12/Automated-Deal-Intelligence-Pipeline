@@ -1,12 +1,12 @@
 """
 Generate Client Handshake Dossier
-Layer 3 Deterministic Tool — nayva tech industries
+Layer 3 Deterministic Tool — Swaraj Shelke Automations
 """
 from utils import logger
 
-def build_dossier_manifest(client_name, agency_name="nayva tech industries"):
+def build_dossier_manifest(client_name, agency_name="Swaraj Shelke"):
     manifest = {
-        "automation": "AI Meeting Prepration automation",
+        "automation": "AI Meeting Preparation CRM",
         "client": client_name,
         "operator": agency_name,
         "schedule": "Every 1-2 hours",
@@ -17,4 +17,4 @@ def build_dossier_manifest(client_name, agency_name="nayva tech industries"):
 
 if __name__ == "__main__":
     m = build_dossier_manifest("Acme Corp")
-    assert m["operator"] == "nayva tech industries"
+    assert m["operator"] == "Swaraj Shelke"

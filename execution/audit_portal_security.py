@@ -1,6 +1,6 @@
 """
 Audit Client Portal Security Gate
-Layer 3 Deterministic Tool — nayva tech industries
+Layer 3 Deterministic Tool — Swaraj Shelke Automations
 """
 from utils import logger
 
@@ -15,4 +15,4 @@ def audit_gatekeeper_credentials(client_id, password):
     return True
 
 if __name__ == "__main__":
-    assert audit_gatekeeper_credentials("client@navyatech.co.in", "NayvaTech2026!")
+    assert audit_gatekeeper_credentials("swarajshelke392@gmail.com", "Swaraj2026!")

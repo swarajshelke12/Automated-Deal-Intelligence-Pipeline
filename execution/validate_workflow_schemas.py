@@ -1,6 +1,7 @@
 """
 Validate n8n Workflow Schemas
-Deterministic tool to inspect and ensure the integrity of the two backend n8n JSON files.
+Deterministic tool to inspect and ensure the integrity of the backend n8n JSON files.
+Layer 3 Deterministic Tool — Swaraj Shelke Automations
 """
 
 import json
@@ -16,6 +17,12 @@ WORKFLOW_DIR = BASE_DIR / "n8nWorkflows" if (BASE_DIR / "n8nWorkflows").exists()
 def validate_workflows():
     w1_path = WORKFLOW_DIR / W1_NAME
     w2_path = WORKFLOW_DIR / W2_NAME
+
+    # Fallback to alternate names if downloaded with (1)
+    if not w1_path.exists():
+        alt = WORKFLOW_DIR / "Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp (1).json"
+        if alt.exists():
+            w1_path = alt
 
     if not w1_path.exists():
         logger.error(f"Missing Workflow 1: {w1_path}")
@@ -47,17 +54,20 @@ def validate_workflows():
     else:
         logger.info("[PASS] Workflow 1 has all core pipeline nodes.")
 
-    # Verify key nodes in Workflow 2
+    # Verify key nodes in Workflow 2 (allowing n8n versioned suffix '1')
     w2_node_names = {n.get("name") for n in w2.get("nodes", [])}
-    required_w2 = {
-        "Execute Workflow Trigger",
-        "Router",
-        "Get Last Correspondence",
-        "Correspondance Recap Agent",
-        "APIFY Web Scraper",
-        "LinkedIn Summarizer Agent",
-    }
-    missing_w2 = required_w2 - w2_node_names
+    required_w2_groups = [
+        {"Execute Workflow Trigger"},
+        {"Router", "Router1"},
+        {"Get Last Correspondence", "Get Last Correspondence1"},
+        {"Correspondance Recap Agent", "Correspondance Recap Agent1"},
+        {"APIFY Web Scraper"},
+        {"LinkedIn Summarizer Agent", "LinkedIn Summarizer Agent1"},
+    ]
+    missing_w2 = []
+    for group in required_w2_groups:
+        if not (group & w2_node_names):
+            missing_w2.append("/".join(group))
     if missing_w2:
         logger.warning(f"Workflow 2 missing expected nodes: {missing_w2}")
     else:
