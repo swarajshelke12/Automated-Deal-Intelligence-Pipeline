@@ -297,7 +297,7 @@
               "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "No activities found."
+              "value": "No LinkedIn profile provided."
             }
           ]
         },
@@ -393,7 +393,7 @@
               "id": "b4354c00-cc1a-4a55-8b44-6ba4854cc6ba",
               "name": "linkedin_profile_url",
               "type": "string",
-              "value": "={{ $json.linkedin_url || $json.linkedin || $json.linkedin_profile_url }}\n"
+              "value": "={{ ($json.linkedin_url || $json.linkedin || $json.linkedin_profile_url || \"\").trim() }}"
             },
             {
               "id": "4888db89-2573-4246-8ab9-c106a7fe5f38",
@@ -468,24 +468,24 @@
       "parameters": {
         "conditions": {
           "options": {
-            "caseSensitive": true,
+            "caseSensitive": false,
             "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
+          "combinator": "and",
           "conditions": [
             {
               "id": "1382e335-bfae-4665-a2ee-a05496a7b463",
               "operator": {
                 "type": "string",
-                "operation": "exists",
-                "singleValue": true
+                "operation": "startsWith",
+                "singleValue": false
               },
-              "leftValue": "={{ $json.linkedin_url || $json.linkedin || $json.linkedin_profile_url }}\n",
-              "rightValue": ""
+              "leftValue": "={{ ($json.linkedin_url || $json.linkedin || $json.linkedin_profile_url || \"\").trim() }}",
+              "rightValue": "http"
             }
-          ],
-          "combinator": "and"
+          ]
         },
         "options": {}
       },
@@ -500,12 +500,12 @@
     },
     {
       "parameters": {
-        "url": "https://api.apify.com/v2/acts/apify~web-scraper/run-sync-get-dataset-items",
+        "url": "https://api.apify.com/v2/acts/apify~web-scraper/run-sync-get-dataset-items?timeout=35&memory=1024",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpQueryAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"startUrls\": [\n    {\n      \"url\": \"{{ ($json.linkedin_profile_url || $json.linkedin_url || 'https://www.linkedin.com/in/shradha-khapra/').trim() }}\",\n      \"method\": \"GET\"\n    }\n  ],\n  \"initialCookies\": [\n    {\n      \"name\": \"li_at\",\n      \"value\": \"{{ ($json.linkedin_cookies || '').replace(/^li_at=/, '').trim() }}\",\n      \"domain\": \".linkedin.com\",\n      \"path\": \"/\",\n      \"httpOnly\": true,\n      \"secure\": true\n    }\n  ],\n  \"breakpointLocation\": \"NONE\",\n  \"browserLog\": false,\n  \"closeCookieModals\": true,\n  \"debugLog\": false,\n  \"downloadCss\": false,\n  \"downloadMedia\": false,\n  \"excludes\": [\n    {\n      \"glob\": \"/**/*.{png,jpg,jpeg,pdf}\"\n    }\n  ],\n  \"headless\": true,\n  \"ignoreCorsAndCsp\": true,\n  \"ignoreSslErrors\": false,\n  \"injectJQuery\": true,\n  \"keepUrlFragments\": false,\n  \"linkSelector\": \"a[href]\",\n  \"maxCrawlingDepth\": 1,\n  \"maxPagesPerCrawl\": 1,\n  \"maxRequestRetries\": 2,\n  \"maxResultsPerCrawl\": 1,\n  \"pageFunction\": \"async function pageFunction(context) {\\n  await new Promise(res => { setTimeout(res, 4000) });\\n  const $ = context.jQuery;\\n  const title = $('title').first().text();\\n  const bodyClone = $('body').clone();\\n  bodyClone.find('iframe, img, script, style, object, embed, noscript, svg, video, audio').remove();\\n  const body = bodyClone.html() || '';\\n  const text = bodyClone.text().replace(/\\\\s+/g, ' ').trim().slice(0, 15000);\\n  return { url: context.request.url, title, body, text };\\n}\",\n  \"postNavigationHooks\": \"[async (crawlingContext) => {}]\",\n  \"preNavigationHooks\": \"[async (crawlingContext, gotoOptions) => {}]\",\n  \"proxyConfiguration\": {\n    \"useApifyProxy\": true\n  },\n  \"runMode\": \"PRODUCTION\",\n  \"useChrome\": true,\n  \"waitUntil\": [\n    \"domcontentloaded\"\n  ],\n  \"globs\": [],\n  \"pseudoUrls\": [],\n  \"proxyRotation\": \"RECOMMENDED\",\n  \"maxConcurrency\": 50,\n  \"pageLoadTimeoutSecs\": 90,\n  \"pageFunctionTimeoutSecs\": 90,\n  \"maxScrollHeightPixels\": 5000,\n  \"customData\": {}\n}",
+        "jsonBody": "={\n  \"startUrls\": [\n    {\n      \"url\": \"{{ ($json.linkedin_profile_url || $json.linkedin_url || '').trim() }}\",\n      \"method\": \"GET\"\n    }\n  ],\n  \"initialCookies\": [\n    {\n      \"name\": \"li_at\",\n      \"value\": \"{{ ($json.linkedin_cookies || '').replace(/^li_at=/, '').trim() }}\",\n      \"domain\": \".linkedin.com\",\n      \"path\": \"/\",\n      \"httpOnly\": true,\n      \"secure\": true\n    }\n  ],\n  \"breakpointLocation\": \"NONE\",\n  \"browserLog\": false,\n  \"closeCookieModals\": true,\n  \"debugLog\": false,\n  \"downloadCss\": false,\n  \"downloadMedia\": false,\n  \"excludes\": [\n    {\n      \"glob\": \"/**/*.{png,jpg,jpeg,pdf,gif,svg,webp,mp4,mp3,woff,woff2,ttf}\"\n    }\n  ],\n  \"headless\": true,\n  \"ignoreCorsAndCsp\": true,\n  \"ignoreSslErrors\": true,\n  \"injectJQuery\": true,\n  \"keepUrlFragments\": false,\n  \"linkSelector\": \"a[href]\",\n  \"maxCrawlingDepth\": 1,\n  \"maxPagesPerCrawl\": 1,\n  \"maxRequestRetries\": 0,\n  \"maxResultsPerCrawl\": 1,\n  \"pageFunction\": \"async function pageFunction(context) {\\n  await new Promise(res => setTimeout(res, 2500));\\n  const $ = context.jQuery;\\n  const title = $('title').first().text() || '';\\n  const bodyClone = $('body').clone();\\n  bodyClone.find('iframe, img, script, style, object, embed, noscript, svg, video, audio').remove();\\n  const body = bodyClone.html() || '';\\n  const text = bodyClone.text().replace(/\\\\s+/g, ' ').trim().slice(0, 15000);\\n  return { url: context.request.url, title, body, text };\\n}\",\n  \"postNavigationHooks\": \"[async (crawlingContext) => {}]\",\n  \"preNavigationHooks\": \"[async (crawlingContext, gotoOptions) => { gotoOptions.waitUntil = 'domcontentloaded'; gotoOptions.timeout = 20000; }]\",\n  \"proxyConfiguration\": {\n    \"useApifyProxy\": true\n  },\n  \"proxyRotation\": \"RECOMMENDED\",\n  \"runMode\": \"PRODUCTION\",\n  \"useChrome\": true,\n  \"waitUntil\": [\n    \"domcontentloaded\"\n  ],\n  \"globs\": [],\n  \"pseudoUrls\": [],\n  \"maxConcurrency\": 1,\n  \"pageLoadTimeoutSecs\": 20,\n  \"pageFunctionTimeoutSecs\": 15,\n  \"maxScrollHeightPixels\": 3000,\n  \"customData\": {}\n}",
         "options": {}
       },
       "id": "7ecee6ad-8bd3-4079-8ddd-5868d19e3051",
@@ -521,7 +521,8 @@
           "id": "h0BZVb9Osb1PoGY8",
           "name": "Apify API"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -659,7 +660,7 @@
               "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "No activities found."
+              "value": "No public LinkedIn profile activities retrieved."
             }
           ]
         },
