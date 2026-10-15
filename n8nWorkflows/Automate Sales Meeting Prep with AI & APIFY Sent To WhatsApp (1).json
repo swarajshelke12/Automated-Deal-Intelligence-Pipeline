@@ -1,5 +1,4 @@
 {
-  "name": "Automate Sales Meeting Prep with AI & APIFY Sent To WhatsApp",
   "nodes": [
     {
       "parameters": {
@@ -13,7 +12,7 @@
         "limit": 1,
         "options": {
           "timeMin": "={{ $now.toUTC() }}",
-          "timeMax": "={{ $now.toUTC().plus(2, 'hour') }}",
+          "timeMax": "={{ $now.toUTC().plus(1, 'hour') }}",
           "singleEvents": true,
           "orderBy": "startTime"
         }
@@ -23,7 +22,7 @@
       "type": "n8n-nodes-base.googleCalendar",
       "position": [
         736,
-        720
+        752
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -35,9 +34,9 @@
     },
     {
       "parameters": {
-        "text": "=start: {{ $json.start.dateTime }}\nmeeting url: {{ $json.hangoutLink }}\nsummary: {{ $json.summary }}\ndescription: {{ $json.description }}\norganiser: {{ $json.organizer.displayName }} ({{ $json.organizer.email }})\nattendees: {{ $json.attendees.filter(item => !item.organizer).map(item => item.email).join(',') }}",
+        "text": "=start: {{ $json.start.dateTime }}\nmeeting url: {{ $json.hangoutLink }}\nsummary: {{ $json.summary }}\ndescription: {{ $json.description }}\norganiser: {{ $json.creator.email }} ({{ $json.organizer.email }})\nattendees: {{ $json.attendees.filter(item => !item.organizer).map(item => item.email).join(',') }}",
         "schemaType": "manual",
-        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"attendees\": {\n \"type\": \"array\",\n \"description\": \"list of attendees excluding the meeting organiser\",\n \"items\": {\n\t\t\t\"type\": \"object\",\n\t\t\t\"properties\": {\n\t\t\t \"name\": { \"type\": \"string\" },\n \"email\": { \"type\": \"string\" },\n \"linkedin_url\": { \"type\": \"string\" }\n\t\t\t}\n }\n\t\t}\n\t}\n}",
+        "inputSchema": "{\n  \"parameters\": {\n    \"text\": \"=start: {{ $json.start.dateTime }}\\nmeeting url: {{ $json.hangoutLink }}\\nsummary: {{ $json.summary }}\\ndescription: {{ $json.description }}\\norganiser: {{ $json.creator.email || $json.organizer.email }}\\nattendees: {{ $json.attendees.filter(item => !item.organizer).map(item => item.email).join(',') }}\",\n    \"schemaType\": \"manual\",\n    \"inputSchema\": \"{\\n\\t\\\"type\\\": \\\"object\\\",\\n\\t\\\"properties\\\": {\\n\\t\\t\\\"attendees\\\": {\\n\\t\\t\\t\\\"type\\\": \\\"array\\\",\\n\\t\\t\\t\\\"description\\\": \\\"list of attendees excluding the meeting organiser\\\",\\n\\t\\t\\t\\\"items\\\": {\\n\\t\\t\\t\\t\\\"type\\\": \\\"object\\\",\\n\\t\\t\\t\\t\\\"properties\\\": {\\n\\t\\t\\t\\t\\t\\\"name\\\": { \\\"type\\\": \\\"string\\\", \\\"description\\\": \\\"Attendee full name\\\" },\\n\\t\\t\\t\\t\\t\\\"email\\\": { \\\"type\\\": \\\"string\\\", \\\"description\\\": \\\"Attendee email\\\" },\\n\\t\\t\\t\\t\\t\\\"linkedin_url\\\": { \\\"type\\\": \\\"string\\\", \\\"description\\\": \\\"The full LinkedIn profile URL starting with https://www.linkedin.com/in/... found in the description or invite. ALWAYS extract any LinkedIn URL present in the description regardless of attendee name. Never return newlines or whitespace.\\\" }\\n\\t\\t\\t\\t},\\n\\t\\t\\t\\t\\\"required\\\": [\\\"email\\\", \\\"name\\\"]\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\",\n    \"options\": {\n      \"systemPromptTemplate\": \"You are an expert attendee extraction algorithm.\\nFor every attendee, extract their name, email, and linkedin_url.\\nIMPORTANT: If ANY LinkedIn URL (starting with http) is found in the meeting description or summary, you MUST extract and assign it to the attendee's linkedin_url property. Never output newlines or whitespace for linkedin_url.\"\n    }\n  },\n  \"id\": \"39cbc3d3-52cd-4448-a4e4-7b266ac2de11\",\n  \"name\": \"Extract Attendee Information\",\n  \"type\": \"@n8n/n8n-nodes-langchain.informationExtractor\",\n  \"position\": [\n    928,\n    720\n  ],\n  \"typeVersion\": 1\n}\n",
         "options": {
           "systemPromptTemplate": "You are an expert extraction algorithm. Try to link any information found in the description to help fill in the attendee details.\nIf you do not know the value of an attribute asked to extract, you may omit the attribute's value."
         }
@@ -46,8 +45,8 @@
       "name": "Extract Attendee Information",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        928,
-        720
+        960,
+        752
       ],
       "typeVersion": 1
     },
@@ -134,14 +133,14 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={{ Object.assign({ \"route\": \"email\" }, $json) }}",
+        "jsonOutput": "={{ Object.assign({ \"route\": \"email\" }, $json) }}\n",
         "options": {}
       },
       "id": "998af378-2ea1-4a8a-b829-74c4b74d7346",
       "name": "Set Route Email",
       "type": "n8n-nodes-base.set",
       "position": [
-        1472,
+        1536,
         656
       ],
       "typeVersion": 3.4
@@ -149,15 +148,15 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={{ Object.assign({ \"route\": \"linkedin\" }, $json) }}",
+        "jsonOutput": "={{\n  (() => {\n    let url = ($json.linkedin_url || '').trim();\n    // If LLM returned empty, \\n, or non-http, extract directly from calendar description!\n    if (!url.startsWith('http')) {\n      const desc = $('Check For Upcoming Meetings').first()?.json?.description || '';\n      const match = desc.match(/https?:\\/\\/(?:www\\.)?linkedin\\.com\\/in\\/[^\\s<\"']+/i) || desc.match(/https?:\\/\\/[^\\s<\"']+/i);\n      url = match ? match[0] : '';\n    }\n    return Object.assign({}, $json, {\n      route: \"linkedin\",\n      linkedin_url: url\n    });\n  })()\n}}\n",
         "options": {}
       },
       "id": "24a73de0-bfbc-497e-9582-df0bdc9e6ef5",
       "name": "Set Route Linkedin",
       "type": "n8n-nodes-base.set",
       "position": [
-        1472,
-        816
+        1536,
+        848
       ],
       "typeVersion": 3.4
     },
@@ -170,8 +169,8 @@
       "name": "Attendees to List",
       "type": "n8n-nodes-base.splitOut",
       "position": [
-        1248,
-        720
+        1312,
+        752
       ],
       "typeVersion": 1
     },
@@ -185,8 +184,8 @@
       "name": "Merge Attendee with Summaries",
       "type": "n8n-nodes-base.set",
       "position": [
-        2032,
-        736
+        2208,
+        752
       ],
       "typeVersion": 3.4
     },
@@ -197,7 +196,7 @@
           "value": "90nr9TEfn5wnaJBk",
           "mode": "list",
           "cachedResultUrl": "/workflow/90nr9TEfn5wnaJBk",
-          "cachedResultName": "Email & linkedin scraping"
+          "cachedResultName": "Email & linkedin scraping for meeting prep"
         },
         "mode": "each",
         "options": {
@@ -208,7 +207,7 @@
       "name": "Get Correspondance",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1664,
+        1760,
         656
       ],
       "typeVersion": 1.1,
@@ -224,8 +223,8 @@
       "name": "Merge",
       "type": "n8n-nodes-base.merge",
       "position": [
-        1872,
-        736
+        1984,
+        752
       ],
       "typeVersion": 3
     },
@@ -238,8 +237,8 @@
       "name": "Aggregate Attendees",
       "type": "n8n-nodes-base.aggregate",
       "position": [
-        2192,
-        736
+        2432,
+        752
       ],
       "typeVersion": 1
     },
@@ -250,7 +249,7 @@
           "value": "90nr9TEfn5wnaJBk",
           "mode": "list",
           "cachedResultUrl": "/workflow/90nr9TEfn5wnaJBk",
-          "cachedResultName": "Email & linkedin scraping"
+          "cachedResultName": "Email & linkedin scraping for meeting prep"
         },
         "mode": "each",
         "options": {
@@ -261,8 +260,8 @@
       "name": "Get LinkedIn Profile & Activity",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1664,
-        816
+        1760,
+        848
       ],
       "typeVersion": 1.1,
       "onError": "continueRegularOutput"
@@ -285,7 +284,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=meeting date: {{ $('Check For Upcoming Meetings').item.json.start.dateTime }}\nmeeting url: {{ $('Check For Upcoming Meetings').item.json.hangoutLink }}\nmeeting summary: {{ $('Check For Upcoming Meetings').first().json.summary }}\nmeeting description: {{ $('Check For Upcoming Meetings').item.json.description }}\nmeeting with: {{ $json.attendees.map(item => item.name).join(',') }}\n---\n{{\n$json.attendees.map(item => {\n return\n`attendee name: ${item.name}\n${item.name}'s last correspondance: ${item.email_summary.replaceAll('\\n', ' ') || `We have not had any correspondance with ${item.name}`}\n${item.name}'s linkedin profile: ${item.linkedin_summary.replaceAll('\\n', ' ') || `We were unable to find the linkedin profile for ${$json.name}`}\n`\n}).join('\\n---\\n')\n}}",
+        "text": "=meeting date: {{ $('Check For Upcoming Meetings').item.json.start.dateTime }}\nmeeting url: {{ $('Check For Upcoming Meetings').item.json.hangoutLink }}\nmeeting summary: {{ $('Check For Upcoming Meetings').first().json.summary }}\nmeeting description: {{ $('Check For Upcoming Meetings').item.json.description || 'No description provided' }}\nmeeting with: {{ ($json.data || $json.attendees || []).map(item => item.name || item.email).join(', ') }}\n---\n{{\n($json.data || $json.attendees || []).map(item => {\n  const attendee = item.name || item.email || 'Attendee';\n  const emailIntel = (item.email_summary || '').replaceAll('\\n', ' ') || 'No previous correspondence found';\n  const linkedInIntel = (item.linkedin_summary || '').replaceAll('\\n', ' ') || 'No public LinkedIn profile activities found';\n\n  return `attendee: ${attendee}\nlast correspondence: ${emailIntel}\nlinkedin insights: ${linkedInIntel}`;\n}).join('\\n---\\n')\n}}\n",
         "messages": {
           "messageValues": [
             {
@@ -298,21 +297,21 @@
       "name": "Attendee Research Agent",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        2368,
-        736
+        2656,
+        752
       ],
       "typeVersion": 1.4
     },
     {
       "parameters": {
-        "model": "openai/gpt-oss-20b",
+        "model": "openai/gpt-oss-120b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        928,
-        912
+        1032,
+        984
       ],
       "id": "d25ca1f4-196d-4066-a5bc-049d85e4b4ff",
       "name": "Groq Chat Model",
@@ -325,14 +324,14 @@
     },
     {
       "parameters": {
-        "model": "openai/gpt-oss-20b",
+        "model": "openai/gpt-oss-120b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        2368,
-        912
+        2728,
+        984
       ],
       "id": "7292c1ce-d5d1-4241-9af4-741e0309207e",
       "name": "Groq Chat Model1",
@@ -340,30 +339,6 @@
         "groqApi": {
           "id": "zIEhPVGfK1pbN5F3",
           "name": "Groq api"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "5999707366",
-        "text": "={{ $json.text }}",
-        "additionalFields": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        2736,
-        736
-      ],
-      "id": "4958df01-76bd-454f-9759-bd24d37c643e",
-      "name": "Send a text message",
-      "webhookId": "b0a8ea74-e31a-4bed-81c8-3fbaa91eb9e8",
-      "credentials": {
-        "telegramApi": {
-          "id": "lrT1Mwrd9zjO04T4",
-          "name": "Swaraj's personal bot"
         }
       }
     },
@@ -381,96 +356,37 @@
       "typeVersion": 1.4,
       "position": [
         512,
-        720
+        752
       ],
       "id": "9d52e373-5a7b-4b6d-986e-ec156e7c0261",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "your whatsapp phone number id",
+        "recipientPhoneNumber": "=+91(your phonw number)",
+        "textBody": "={{ $json.text || $json.output || $json.response.text }}\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        3008,
+        752
+      ],
+      "id": "b30805a7-2904-4000-8c2a-69d6c6ba43e8",
+      "name": "Send message",
+      "webhookId": "23060b58-0b59-483e-9013-bd0768698480",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "1y7htNMvi6yyLabA",
+          "name": "app: swarajshelke12autoupload"
+        }
+      }
     }
   ],
-  "pinData": {},
   "connections": {
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Merge Attendee with Summaries",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Set Route Email": {
-      "main": [
-        [
-          {
-            "node": "Get Correspondance",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Attendees to List": {
-      "main": [
-        [
-          {
-            "node": "Set Route Email",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Set Route Linkedin",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Correspondance": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Set Route Linkedin": {
-      "main": [
-        [
-          {
-            "node": "Get LinkedIn Profile & Activity",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Aggregate Attendees": {
-      "main": [
-        [
-          {
-            "node": "Attendee Research Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Attendee Research Agent": {
-      "main": [
-        [
-          {
-            "node": "Send a text message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Check For Upcoming Meetings": {
       "main": [
         [
@@ -493,11 +409,82 @@
         ]
       ]
     },
+    "Set Route Email": {
+      "main": [
+        [
+          {
+            "node": "Get Correspondance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Route Linkedin": {
+      "main": [
+        [
+          {
+            "node": "Get LinkedIn Profile & Activity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attendees to List": {
+      "main": [
+        [
+          {
+            "node": "Set Route Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Route Linkedin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Merge Attendee with Summaries": {
       "main": [
         [
           {
             "node": "Aggregate Attendees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Correspondance": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge Attendee with Summaries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Attendees": {
+      "main": [
+        [
+          {
+            "node": "Attendee Research Agent",
             "type": "main",
             "index": 0
           }
@@ -511,6 +498,17 @@
             "node": "Merge",
             "type": "main",
             "index": 1
+          }
+        ]
+      ]
+    },
+    "Attendee Research Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -549,21 +547,9 @@
       ]
     }
   },
-  "active": true,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": true,
-    "timeSavedMode": "fixed",
-    "timezone": "Asia/Kolkata",
-    "callerPolicy": "workflowsFromSameOwner"
-  },
-  "versionId": "190aca43-d525-4e4a-895f-0249d05585cf",
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ede2a1723ff2c9a76eefabde4eb2ad1dd03725eba54d7dc23a2039bda2e2dc3e"
-  },
-  "nodeGroups": [],
-  "id": "DxPA1OGu39FxU9os",
-  "tags": []
+  }
 }
