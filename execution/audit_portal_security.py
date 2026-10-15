@@ -15,4 +15,4 @@ def audit_gatekeeper_credentials(client_id, password):
     return True
 
 if __name__ == "__main__":
-    assert audit_gatekeeper_credentials("swarajshelke392@gmail.com", "Swaraj2026!")
+    assert audit_gatekeeper_credentials("client_admin", "Swaraj2026!")

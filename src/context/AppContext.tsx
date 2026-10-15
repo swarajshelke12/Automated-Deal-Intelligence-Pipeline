@@ -324,7 +324,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (inputId === configuredId && inputPass === configuredPass) ||
       (inputId === 'client' && (inputPass === '1234' || inputPass === 'Swaraj2026')) ||
       (inputId === 'swaraj' && (inputPass === '1234' || inputPass === 'Swaraj2026' || inputPass === 'admin')) ||
-      (inputId === 'swarajshelke392@gmail.com' && (inputPass === '1234' || inputPass === 'Swaraj2026' || inputPass === 'admin')) ||
       // 2. Admin access
       ((inputId === 'admin' || inputId === 'root') &&
         (inputPass === 'admin' || inputPass === '1234' || inputPass === 'Swaraj2026' || inputPass === configuredPass));
@@ -346,7 +345,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     return {
       success: false,
-      message: 'Invalid Client ID or Password. Please contact Swaraj Shelke (swarajshelke392@gmail.com).'
+      message: 'Invalid Client ID or Password. Please contact your system administrator.'
     };
   };
 

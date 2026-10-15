@@ -117,13 +117,6 @@ const MainLayout: React.FC = () => {
                 <span>LinkedIn</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
-              <span>·</span>
-              <a
-                href="mailto:swarajshelke392@gmail.com"
-                className="text-zinc-400 hover:text-zinc-200 transition-colors"
-              >
-                <span>Email</span>
-              </a>
             </div>
           </div>
         </footer>
