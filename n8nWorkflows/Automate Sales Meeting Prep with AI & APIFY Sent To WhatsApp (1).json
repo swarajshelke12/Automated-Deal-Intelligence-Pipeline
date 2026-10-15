@@ -2,6 +2,30 @@
   "nodes": [
     {
       "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1225558513972542",
+        "recipientPhoneNumber": "=+918668820392",
+        "textBody": "={{ $json.text || $json.output || $json.response.text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        10448,
+        3504
+      ],
+      "id": "408ecdf0-52ed-4f5c-bedf-20c1b2833ee0",
+      "name": "Send message1",
+      "webhookId": "23060b58-0b59-483e-9013-bd0768698480",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "1y7htNMvi6yyLabA",
+          "name": "app: swarajshelke12autoupload"
+        }
+      }
+    },
+    {
+      "parameters": {
         "operation": "getAll",
         "calendar": {
           "__rl": true,
@@ -17,12 +41,12 @@
           "orderBy": "startTime"
         }
       },
-      "id": "42d49eba-8250-4477-aaef-1229ae56f36e",
+      "id": "997e74cb-dfeb-4774-a6a8-c76752098569",
       "name": "Check For Upcoming Meetings",
       "type": "n8n-nodes-base.googleCalendar",
       "position": [
-        736,
-        752
+        8176,
+        3504
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -41,12 +65,12 @@
           "systemPromptTemplate": "You are an expert attendee intelligence extraction algorithm.\nYour job is to parse upcoming meeting events regardless of how messy or formatted the event details are.\nExtract each guest attendee (excluding the meeting organizer):\n1. 'email': The attendee's email address.\n2. 'name': The attendee's full name (if not explicitly given, derive a friendly name from their email address or description).\n3. 'linkedin_url': If ANY LinkedIn profile URL (https://...linkedin.com/in/...) is present anywhere in the description, notes, or invite, extract it and assign it to the attendee.\nNever invent placeholder attendees. Only extract real attendees."
         }
       },
-      "id": "39cbc3d3-52cd-4448-a4e4-7b266ac2de11",
+      "id": "a2d5152e-bea1-4ef1-8a04-5d7af528fd73",
       "name": "Extract Attendee Information",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        960,
-        752
+        8400,
+        3504
       ],
       "typeVersion": 1
     },
@@ -57,12 +81,12 @@
         "width": 377,
         "color": 7
       },
-      "id": "66668648-46f3-45f3-b7ee-0caa327e88c6",
+      "id": "ea6942e5-fdd0-43cf-80bb-c8f34daec86f",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        464,
-        -64
+        7904,
+        2688
       ],
       "typeVersion": 1
     },
@@ -73,12 +97,12 @@
         "width": 576,
         "color": 7
       },
-      "id": "c9d9dfba-28ef-47dd-9918-47f7165008df",
+      "id": "8823ab81-12c5-4292-936b-72f543d023fd",
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        864,
-        -64
+        8304,
+        2688
       ],
       "typeVersion": 1
     },
@@ -89,12 +113,12 @@
         "width": 636,
         "color": 7
       },
-      "id": "ecd7d042-92a8-414f-bee0-969c96f5b622",
+      "id": "1ad5071f-9e6e-4b0c-a16a-2419937130d7",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1472,
-        -64
+        8912,
+        2688
       ],
       "typeVersion": 1
     },
@@ -105,12 +129,12 @@
         "width": 450,
         "color": 7
       },
-      "id": "7afebe79-d732-4b3e-b2f2-470000d8240f",
+      "id": "5f03b1ad-f268-44f7-b0b4-48233adc16e9",
       "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2144,
-        -64
+        9584,
+        2688
       ],
       "typeVersion": 1
     },
@@ -121,12 +145,12 @@
         "width": 403,
         "color": 7
       },
-      "id": "aafad60f-f7da-44f6-8637-b55f3a35c90c",
+      "id": "47f4053c-3905-4f6b-8d04-259f8645a32c",
       "name": "Sticky Note4",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2624,
-        -64
+        10064,
+        2688
       ],
       "typeVersion": 1
     },
@@ -136,12 +160,12 @@
         "jsonOutput": "={{ Object.assign({ \"route\": \"email\" }, $json) }}\n",
         "options": {}
       },
-      "id": "998af378-2ea1-4a8a-b829-74c4b74d7346",
+      "id": "ff28937c-a220-40a0-8195-0602bb3c5b87",
       "name": "Set Route Email",
       "type": "n8n-nodes-base.set",
       "position": [
-        1536,
-        656
+        8976,
+        3408
       ],
       "typeVersion": 3.4
     },
@@ -151,12 +175,12 @@
         "jsonOutput": "={{\n  (() => {\n    let url = ($json.linkedin_url || '').trim();\n    // If LLM returned empty, \\n, or non-http, extract directly from calendar description!\n    if (!url.startsWith('http')) {\n      const desc = $('Check For Upcoming Meetings').first()?.json?.description || '';\n      const match = desc.match(/https?:\\/\\/(?:www\\.)?linkedin\\.com\\/in\\/[^\\s<\"']+/i) || desc.match(/https?:\\/\\/[^\\s<\"']+/i);\n      url = match ? match[0] : '';\n    }\n    return Object.assign({}, $json, {\n      route: \"linkedin\",\n      linkedin_url: url\n    });\n  })()\n}}\n",
         "options": {}
       },
-      "id": "24a73de0-bfbc-497e-9582-df0bdc9e6ef5",
+      "id": "f2a808b5-76be-4533-b2ba-d494ab6a3fcb",
       "name": "Set Route Linkedin",
       "type": "n8n-nodes-base.set",
       "position": [
-        1536,
-        848
+        8976,
+        3600
       ],
       "typeVersion": 3.4
     },
@@ -165,12 +189,12 @@
         "fieldToSplitOut": "output.attendees",
         "options": {}
       },
-      "id": "bfc83b63-f4fb-4d3b-8546-46592458344f",
+      "id": "755980b4-f1d0-43d3-a39f-c0b434579954",
       "name": "Attendees to List",
       "type": "n8n-nodes-base.splitOut",
       "position": [
-        1312,
-        752
+        8752,
+        3504
       ],
       "typeVersion": 1
     },
@@ -180,12 +204,12 @@
         "jsonOutput": "={{ Object.assign({}, $('Attendees to List').item.json, $json) }}",
         "options": {}
       },
-      "id": "f1eba7bf-e7d2-4e1e-bd03-f5a249eb6c45",
+      "id": "1f38fa86-f483-42cb-9225-130dc57e0703",
       "name": "Merge Attendee with Summaries",
       "type": "n8n-nodes-base.set",
       "position": [
-        2208,
-        752
+        9648,
+        3504
       ],
       "typeVersion": 3.4
     },
@@ -203,12 +227,12 @@
           "waitForSubWorkflow": true
         }
       },
-      "id": "ace0dd28-5de0-46a2-b4e7-0e1e94335770",
+      "id": "4c1c9efb-91c4-4568-84c0-16e7217a62b4",
       "name": "Get Correspondance",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1760,
-        656
+        9200,
+        3408
       ],
       "typeVersion": 1.1,
       "onError": "continueRegularOutput"
@@ -219,12 +243,12 @@
         "combineBy": "combineByPosition",
         "options": {}
       },
-      "id": "5ce47376-37d5-4170-81e0-2d0d4b0a2ffe",
+      "id": "7f0f62be-e3e3-43cb-93eb-6306c9ac51b8",
       "name": "Merge",
       "type": "n8n-nodes-base.merge",
       "position": [
-        1984,
-        752
+        9424,
+        3504
       ],
       "typeVersion": 3
     },
@@ -233,12 +257,12 @@
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
-      "id": "81ad36b5-3d80-4e90-9d21-a59a2eed4b5d",
+      "id": "f2bf2600-ef31-4b3c-8ea7-232fdf664e68",
       "name": "Aggregate Attendees",
       "type": "n8n-nodes-base.aggregate",
       "position": [
-        2432,
-        752
+        9872,
+        3504
       ],
       "typeVersion": 1
     },
@@ -256,12 +280,12 @@
           "waitForSubWorkflow": true
         }
       },
-      "id": "f287db41-7efc-4d7b-aca4-6db49c746776",
+      "id": "6f8b5cbb-d82f-4b95-819d-8b35f405a98d",
       "name": "Get LinkedIn Profile & Activity",
       "type": "n8n-nodes-base.executeWorkflow",
       "position": [
-        1760,
-        848
+        9200,
+        3600
       ],
       "typeVersion": 1.1,
       "onError": "continueRegularOutput"
@@ -272,12 +296,12 @@
         "height": 636,
         "width": 709
       },
-      "id": "19f92347-794d-42aa-91f8-d0dd43cacb3d",
+      "id": "4735db14-ccaa-4033-b22a-3d89e455c02a",
       "name": "Sticky Note13",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -304,
-        -64
+        7136,
+        2688
       ],
       "typeVersion": 1
     },
@@ -293,12 +317,12 @@
           ]
         }
       },
-      "id": "70a61a99-3280-4e82-a3c3-83e891b055b6",
+      "id": "de42e7ef-406a-4227-8c8d-474ad4c4ca02",
       "name": "Attendee Research Agent",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        2656,
-        752
+        10096,
+        3504
       ],
       "typeVersion": 1.4
     },
@@ -310,10 +334,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        1032,
-        984
+        8480,
+        3744
       ],
-      "id": "d25ca1f4-196d-4066-a5bc-049d85e4b4ff",
+      "id": "302266f8-4684-4845-bb41-63bb1c339745",
       "name": "Groq Chat Model",
       "credentials": {
         "groqApi": {
@@ -330,10 +354,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        2728,
-        984
+        10176,
+        3744
       ],
-      "id": "7292c1ce-d5d1-4241-9af4-741e0309207e",
+      "id": "eaa48aba-d94c-49a4-a137-f9d971be4346",
       "name": "Groq Chat Model1",
       "credentials": {
         "groqApi": {
@@ -355,35 +379,11 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.4,
       "position": [
-        512,
-        752
+        7952,
+        3504
       ],
-      "id": "9d52e373-5a7b-4b6d-986e-ec156e7c0261",
+      "id": "f972adc9-7f5a-4da0-a84f-13f6b8794225",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "your whatsapp phone number id",
-        "recipientPhoneNumber": "=+91(your phonw number)",
-        "textBody": "={{ $json.text || $json.output || $json.response.text }}\n",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        3008,
-        752
-      ],
-      "id": "b30805a7-2904-4000-8c2a-69d6c6ba43e8",
-      "name": "Send message",
-      "webhookId": "23060b58-0b59-483e-9013-bd0768698480",
-      "credentials": {
-        "whatsAppApi": {
-          "id": "1y7htNMvi6yyLabA",
-          "name": "app: swarajshelke12autoupload"
-        }
-      }
     }
   ],
   "connections": {
@@ -506,7 +506,7 @@
       "main": [
         [
           {
-            "node": "Send message",
+            "node": "Send message1",
             "type": "main",
             "index": 0
           }

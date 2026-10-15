@@ -1,18 +1,29 @@
 {
   "nodes": [
     {
+      "parameters": {},
+      "id": "1257f1af-690f-4e24-87ad-5770040f5691",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        2000,
+        688
+      ],
+      "typeVersion": 1
+    },
+    {
       "parameters": {
         "operation": "get",
         "messageId": "={{ $json.id }}",
         "simple": false,
         "options": {}
       },
-      "id": "a3b3b95f-d02c-4ffd-8184-e821b04f3bff",
-      "name": "Get Message Contents",
+      "id": "5e1d13bc-699b-414f-84c3-9aaeb77cf2f8",
+      "name": "Get Message Contents1",
       "type": "n8n-nodes-base.gmail",
       "position": [
-        304,
-        352
+        3120,
+        304
       ],
       "webhookId": "fa1d496f-17fa-4e50-bae9-84ca85ed4502",
       "typeVersion": 2.1,
@@ -61,25 +72,14 @@
         },
         "options": {}
       },
-      "id": "14fe75e7-3507-4cca-862c-84dd86e55e87",
-      "name": "Simplify Emails",
+      "id": "e9dc1d3c-a1da-476b-b474-70ca72aa6e51",
+      "name": "Simplify Emails1",
       "type": "n8n-nodes-base.set",
       "position": [
-        592,
-        352
+        3408,
+        304
       ],
       "typeVersion": 3.4
-    },
-    {
-      "parameters": {},
-      "id": "1257f1af-690f-4e24-87ad-5770040f5691",
-      "name": "Execute Workflow Trigger",
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "position": [
-        -816,
-        736
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -89,12 +89,12 @@
           "sender": "={{ $json.email }}"
         }
       },
-      "id": "eec4dd48-4e01-400c-9bb0-cfcb7ae5880f",
-      "name": "Get Last Correspondence",
+      "id": "844902a0-7229-4a08-9566-8cdc4279565e",
+      "name": "Get Last Correspondence1",
       "type": "n8n-nodes-base.gmail",
       "position": [
-        -144,
-        448
+        2672,
+        400
       ],
       "webhookId": "b00c960c-3689-4fa1-9f0f-7d6c9479f0c6",
       "typeVersion": 2.1,
@@ -113,28 +113,28 @@
         "width": 519,
         "color": 7
       },
-      "id": "56792970-0f81-4fd2-b113-45b2f5c075bf",
-      "name": "Sticky Note5",
+      "id": "aa3170ec-c536-4f0a-8fe7-8356fdd07415",
+      "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -128,
-        -96
+        2656,
+        -80
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
         "content": "## 3.4 Scraping LinkedIn With [Apify.com](https://www.apify.com?fpr=414q6)\n[Learn more about Apify.com for Web Scraping](https://www.apify.com?fpr=414q6)\n\nTo get the attendee's recent LinkedIn activity, we'll need a webscraper capable of rendering the user's LinkedIn profile. We'll use [Apify.com](https://www.apify.com?fpr=414q6) which is a commercial web scraping service but has a very generous monthly free tier ($5/mo).\n\nWhile Apify offers a number of dedicated LinkedIn scrapers, we'll build our own which works by impersonating our own LinkedIn account using our login cookie - this can be obtained by inspecting network requests when logged into Linkedin. **Add your LinkedIn Cookie to the node above!**",
-        "height": 388,
+        "height": 340,
         "width": 668,
         "color": 7
       },
-      "id": "db6f9734-2c06-4aa3-8c54-04f370f35dcb",
-      "name": "Sticky Note6",
+      "id": "3b3fa061-f88c-46fb-931b-fe18680f2614",
+      "name": "Sticky Note10",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -528,
-        880
+        1824,
+        1056
       ],
       "typeVersion": 1
     },
@@ -145,11 +145,11 @@
         "width": 572,
         "color": 7
       },
-      "id": "d0319ff9-a299-4e15-8c44-7b6fff8c06d8",
-      "name": "Sticky Note7",
+      "id": "a4343787-c077-492f-bb37-27f075a6dd77",
+      "name": "Sticky Note13",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -848,
+        2000,
         -32
       ],
       "typeVersion": 1
@@ -168,12 +168,12 @@
         },
         "options": {}
       },
-      "id": "5b46198b-9c26-477f-99a0-6a1f43cdc4a7",
-      "name": "Return LinkedIn Success",
+      "id": "2e23110d-eb12-46ca-83c2-b8938a7766c4",
+      "name": "Return LinkedIn Success1",
       "type": "n8n-nodes-base.set",
       "position": [
-        944,
-        688
+        3760,
+        640
       ],
       "typeVersion": 3.4,
       "alwaysOutputData": true
@@ -192,12 +192,12 @@
         },
         "options": {}
       },
-      "id": "52f8fc22-54e2-4478-a2cc-dfeb810fd195",
-      "name": "Return Email Error",
+      "id": "8aab4129-37ab-4935-ac6c-4b2c74ae1c03",
+      "name": "Return Email Error2",
       "type": "n8n-nodes-base.set",
       "position": [
-        304,
-        544
+        3120,
+        496
       ],
       "typeVersion": 3.4
     },
@@ -215,12 +215,12 @@
         },
         "options": {}
       },
-      "id": "a72f3f22-e54d-4081-a34d-b2072aaa32e9",
-      "name": "Return Email Success",
+      "id": "c3665d9b-356a-4556-8f65-e52a7106d3c9",
+      "name": "Return Email Success1",
       "type": "n8n-nodes-base.set",
       "position": [
-        1232,
-        352
+        4048,
+        304
       ],
       "typeVersion": 3.4,
       "alwaysOutputData": true
@@ -280,12 +280,12 @@
         },
         "options": {}
       },
-      "id": "a0935869-5f2d-4e61-82d9-552d22c1fe4b",
-      "name": "Router",
+      "id": "44a6f8b4-c0c5-48fd-b7ac-9c87c401ef49",
+      "name": "Router1",
       "type": "n8n-nodes-base.switch",
       "position": [
-        -592,
-        736
+        2224,
+        688
       ],
       "typeVersion": 3.2
     },
@@ -303,12 +303,12 @@
         },
         "options": {}
       },
-      "id": "1eea6c22-3b66-4093-bb04-8596e3e7f806",
-      "name": "Return LinkedIn Error1",
+      "id": "f6954446-489a-45eb-9aa0-1b6d6890d896",
+      "name": "Return LinkedIn Error2",
       "type": "n8n-nodes-base.set",
       "position": [
-        -144,
-        1024
+        2672,
+        976
       ],
       "typeVersion": 3.4
     },
@@ -337,12 +337,12 @@
         },
         "options": {}
       },
-      "id": "30c0f652-6470-4047-aff3-475f7b1e78bc",
-      "name": "Has Emails?",
+      "id": "f6fecd48-cb92-42b0-83a3-b6ea13040a8c",
+      "name": "Has Emails?1",
       "type": "n8n-nodes-base.if",
       "position": [
-        80,
-        448
+        2896,
+        400
       ],
       "typeVersion": 2.2
     },
@@ -360,12 +360,12 @@
         },
         "options": {}
       },
-      "id": "929e81f5-1f23-4ad8-beb2-11221fe9e7b2",
-      "name": "Return Email Error1",
+      "id": "cf14b3ef-0b60-4072-8152-5a632cefa6e7",
+      "name": "Return Email Error3",
       "type": "n8n-nodes-base.set",
       "position": [
-        -144,
-        640
+        2672,
+        592
       ],
       "typeVersion": 3.4
     },
@@ -376,37 +376,14 @@
         "width": 683,
         "color": 7
       },
-      "id": "bb7e92c9-0859-4f7c-b10c-48df4d0f951c",
-      "name": "Sticky Note9",
+      "id": "869e8766-0615-4340-a2de-a7d706e72205",
+      "name": "Sticky Note14",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        224,
-        992
+        2944,
+        1088
       ],
       "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "b4354c00-cc1a-4a55-8b44-6ba4854cc6ba",
-              "name": "linkedin_url",
-              "type": "string",
-              "value": "={{ ($json.linkedin_url || $json.linkedin || $json.linkedin_profile_url || \"\").trim() }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "12af8a71-7469-4539-b0ae-28f65e763ac0",
-      "name": "Set LinkedIn Cookie",
-      "type": "n8n-nodes-base.set",
-      "position": [
-        -144,
-        832
-      ],
-      "typeVersion": 3.4
     },
     {
       "parameters": {
@@ -415,12 +392,12 @@
         "width": 308,
         "color": 3
       },
-      "id": "77e8513d-850d-4c53-91ac-df6ba390b5ab",
-      "name": "Sticky Note8",
+      "id": "d5e1dae5-b739-41db-a680-2a686b3f6409",
+      "name": "Sticky Note15",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -864,
-        608
+        1568,
+        416
       ],
       "typeVersion": 1
     },
@@ -449,12 +426,12 @@
         },
         "options": {}
       },
-      "id": "97bca4ad-3b7a-4af8-ab74-2106b035ea82",
-      "name": "Has Email Address?",
+      "id": "d2f85895-12ae-4613-aa1c-257dac66f11e",
+      "name": "Has Email Address?1",
       "type": "n8n-nodes-base.if",
       "position": [
-        -368,
-        544
+        2448,
+        496
       ],
       "typeVersion": 2.2
     },
@@ -483,40 +460,14 @@
         },
         "options": {}
       },
-      "id": "62d5fd6c-7fd0-4965-9f6f-fddd374bb856",
-      "name": "Has LinkedIn URL?",
+      "id": "33873241-a7e2-4274-a623-bc2d75f226b3",
+      "name": "Has LinkedIn URL?1",
       "type": "n8n-nodes-base.if",
       "position": [
-        -368,
-        928
+        2448,
+        880
       ],
       "typeVersion": 2.2
-    },
-    {
-      "parameters": {
-        "url": "https://api.apify.com/v2/acts/dev_fusion~linkedin-profile-scraper/run-sync-get-dataset-items?timeout=45",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpQueryAuth",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"profileUrls\": [\n    \"{{ ($json.linkedin_url || $json.linkedin_profile_url || \"\").trim() }}\"\n  ]\n}",
-        "options": {}
-      },
-      "id": "7ecee6ad-8bd3-4079-8ddd-5868d19e3051",
-      "name": "APIFY Web Scraper",
-      "type": "n8n-nodes-base.httpRequest",
-      "position": [
-        80,
-        832
-      ],
-      "typeVersion": 4.2,
-      "credentials": {
-        "httpQueryAuth": {
-          "id": "h0BZVb9Osb1PoGY8",
-          "name": "Apify API"
-        }
-      },
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -536,19 +487,19 @@
                 "operation": "notEmpty",
                 "singleValue": true
               },
-              "leftValue": "={{ $json.headline || $json.summary || $json.fullName || \"\" }}",
+              "leftValue": "={{ $json.fullName || $json.headline || $json.about || $json.id || \"\" }}",
               "rightValue": ""
             }
           ]
         },
         "options": {}
       },
-      "id": "eba1e763-3a38-483e-a9b0-898e98fc73e9",
-      "name": "Is Scrape Successful?",
+      "id": "8b28e723-e6e8-4f24-88da-bbc77ac0ef4d",
+      "name": "Is Scrape Successful?1",
       "type": "n8n-nodes-base.if",
       "position": [
-        304,
-        832
+        3120,
+        784
       ],
       "typeVersion": 2.2
     },
@@ -559,11 +510,11 @@
         "width": 508,
         "color": 7
       },
-      "id": "68ecf5c4-fc21-4761-9361-14948d5a1b3b",
-      "name": "Sticky Note11",
+      "id": "d0158c39-9b03-4f1a-925f-2775bc2c885f",
+      "name": "Sticky Note16",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1056,
+        3808,
         864
       ],
       "typeVersion": 1
@@ -575,11 +526,11 @@
         "width": 594,
         "color": 7
       },
-      "id": "5ca288ed-1c0b-42b1-a800-93a8ce64d903",
-      "name": "Sticky Note12",
+      "id": "a96c0fde-60ec-41b5-90ff-5ada41869baa",
+      "name": "Sticky Note17",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        512,
+        3360,
         -112
       ],
       "typeVersion": 1
@@ -596,33 +547,33 @@
           ]
         }
       },
-      "id": "964e489d-3009-42bf-b4df-b93b9db8e26e",
-      "name": "Correspondance Recap Agent",
+      "id": "6d09ee04-7a7e-40de-81dc-567f2f997555",
+      "name": "Correspondance Recap Agent1",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        880,
-        240
+        3696,
+        192
       ],
       "typeVersion": 1.4
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Profile URL: {{ $json.profileUrl || $('Has LinkedIn URL?').item.json.linkedin_url || '' }}\nFull Name: {{ $json.fullName || '' }}\nHeadline: {{ $json.headline || '' }}\nLocation: {{ $json.location || '' }}\nSummary: {{ $json.summary || '' }}\nRecent Experience: {{ ($json.experience || []).slice(0, 3).map(e => (e.title || '') + ' at ' + (e.companyName || '') + ' (' + (e.duration || '') + ') - ' + (e.description || '')).join('\\n') }}\nSkills: {{ ($json.skills || []).slice(0, 6).map(s => s.name || s).join(', ') }}",
+        "text": "=Full Name: {{ $json.fullName || 'Attendee' }}\nHeadline: {{ $json.headline || 'N/A' }}\nAbout: {{ $json.about || 'N/A' }}\nCurrent Company: {{ $json.currentCompany?.name || 'N/A' }}\nExperience: {{ ($json.experience || []).slice(0, 3).map(e => `${e.title || ''} at ${e.company || ''} (${e.startDate || ''} - ${e.endDate || 'Present'}): ${e.description || ''}`).join('\\n') || 'N/A' }}\nSkills: {{ ($json.skills || []).slice(0, 8).join(', ') || 'N/A' }}",
         "messages": {
           "messageValues": [
             {
-              "message": "=You are a senior executive meeting intelligence assistant.\nSummarize this attendee's professional background, current position, and core domain expertise into 2-3 concise, high-value bullet points for an upcoming sales meeting.\nDo NOT use emojis, conversational filler, or pleasantries."
+              "message": "=You are a senior executive meeting intelligence briefing system.\nSummarize this attendee's professional background, current position, and core expertise into 2-3 concise, high-value bullet points for an upcoming sales meeting.\nDo NOT use emojis, conversational filler, or pleasantries."
             }
           ]
         }
       },
-      "id": "b2f353d2-d381-4629-90d8-d951d475413b",
-      "name": "LinkedIn Summarizer Agent",
+      "id": "1cebd9d3-b3ef-4efd-be22-13d8e0ab59fe",
+      "name": "LinkedIn Summarizer Agent1",
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "position": [
-        528,
-        688
+        3344,
+        640
       ],
       "typeVersion": 1.4
     },
@@ -634,11 +585,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        952,
-        472
+        3776,
+        432
       ],
-      "id": "343d0512-c65e-4a10-828a-e8cba0b54c24",
-      "name": "Groq Chat Model",
+      "id": "27eb22cf-5739-4937-9e7d-44814eec6c18",
+      "name": "Groq Chat Model1",
       "credentials": {
         "groqApi": {
           "id": "zIEhPVGfK1pbN5F3",
@@ -660,99 +611,144 @@
         },
         "options": {}
       },
-      "id": "a6dc0617-2929-4c2d-8684-2d827d09d816",
-      "name": "Return LinkedIn Error",
+      "id": "42c1c7fa-6542-4f69-957b-c14c84447500",
+      "name": "Return LinkedIn Error3",
       "type": "n8n-nodes-base.set",
       "position": [
-        592,
-        928
+        3408,
+        880
       ],
       "typeVersion": 3.4,
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/harvestapi~linkedin-profile-scraper/run-sync-get-dataset-items?timeout=45",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"urls\": [\n    \"{{ ($json.linkedin_url || $json.linkedin_profile_url || \"\").trim() }}\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "fc334f5b-edad-4edd-9bae-9beae6e6a0cc",
+      "name": "APIFY Web Scraper",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2896,
+        784
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "h0BZVb9Osb1PoGY8",
+          "name": "Apify API"
+        }
+      },
+      "onError": "continueRegularOutput"
     }
   ],
   "connections": {
-    "Get Message Contents": {
-      "main": [
-        [
-          {
-            "node": "Simplify Emails",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simplify Emails": {
-      "main": [
-        [
-          {
-            "node": "Correspondance Recap Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Execute Workflow Trigger": {
       "main": [
         [
           {
-            "node": "Router",
+            "node": "Router1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Last Correspondence": {
+    "Get Message Contents1": {
       "main": [
         [
           {
-            "node": "Has Emails?",
+            "node": "Simplify Emails1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Router": {
+    "Simplify Emails1": {
       "main": [
         [
           {
-            "node": "Has Email Address?",
+            "node": "Correspondance Recap Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Last Correspondence1": {
+      "main": [
+        [
+          {
+            "node": "Has Emails?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router1": {
+      "main": [
+        [
+          {
+            "node": "Has Email Address?1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Has LinkedIn URL?",
+            "node": "Has LinkedIn URL?1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Has Emails?": {
+    "Has Emails?1": {
       "main": [
         [
           {
-            "node": "Get Message Contents",
+            "node": "Get Message Contents1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Return Email Error",
+            "node": "Return Email Error2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Set LinkedIn Cookie": {
+    "Has Email Address?1": {
+      "main": [
+        [
+          {
+            "node": "Get Last Correspondence1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Email Error3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has LinkedIn URL?1": {
       "main": [
         [
           {
@@ -760,40 +756,67 @@
             "type": "main",
             "index": 0
           }
-        ]
-      ]
-    },
-    "Has Email Address?": {
-      "main": [
-        [
-          {
-            "node": "Get Last Correspondence",
-            "type": "main",
-            "index": 0
-          }
         ],
         [
           {
-            "node": "Return Email Error1",
+            "node": "Return LinkedIn Error2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Has LinkedIn URL?": {
+    "Is Scrape Successful?1": {
       "main": [
         [
           {
-            "node": "Set LinkedIn Cookie",
+            "node": "LinkedIn Summarizer Agent1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Return LinkedIn Error1",
+            "node": "Return LinkedIn Error3",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Correspondance Recap Agent1": {
+      "main": [
+        [
+          {
+            "node": "Return Email Success1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Summarizer Agent1": {
+      "main": [
+        [
+          {
+            "node": "Return LinkedIn Success1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Correspondance Recap Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "LinkedIn Summarizer Agent1",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -803,78 +826,15 @@
       "main": [
         [
           {
-            "node": "Is Scrape Successful?",
+            "node": "Is Scrape Successful?1",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Is Scrape Successful?": {
-      "main": [
-        [
-          {
-            "node": "LinkedIn Summarizer Agent",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Return LinkedIn Error",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Correspondance Recap Agent": {
-      "main": [
-        [
-          {
-            "node": "Return Email Success",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "LinkedIn Summarizer Agent": {
-      "main": [
-        [
-          {
-            "node": "Return LinkedIn Success",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Groq Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Correspondance Recap Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "LinkedIn Summarizer Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     }
   },
-  "pinData": {
-    "Execute Workflow Trigger": [
-      {
-        "route": "email",
-        "email": "performxswaraj@gmail.com"
-      }
-    ]
-  },
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ede2a1723ff2c9a76eefabde4eb2ad1dd03725eba54d7dc23a2039bda2e2dc3e"
