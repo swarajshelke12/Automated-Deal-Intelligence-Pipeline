@@ -33,8 +33,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
         };
       default:
         return {
-          title: 'AI Meeting Prepration automation',
-          subtitle: 'nayva tech industries'
+          title: 'AI Meeting Preparation CRM',
+          subtitle: 'Engineered by Swaraj Shelke'
         };
     }
   };
@@ -46,7 +46,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
       <div className="flex items-center gap-3">
         <button
           onClick={onOpenMobile}
-          className="p-1.5 -ml-1 text-zinc-400 hover:text-zinc-100 rounded-lg lg:hidden hover:bg-zinc-900"
+          className="p-1.5 -ml-1 text-zinc-400 hover:text-zinc-100 rounded-lg lg:hidden hover:bg-zinc-900 transition-colors"
           aria-label="Open mobile navigation"
         >
           <Menu className="w-5 h-5" />
@@ -64,7 +64,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
         {/* User Guide Button */}
         <button
           onClick={openGuide}
-          className="px-2.5 py-1 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
+          className="px-2.5 py-1 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm active:scale-[0.98]"
           title="Open non-technical guide"
         >
           <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
@@ -88,16 +88,16 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenMobile }) => {
           </span>
         </div>
 
-        {/* Agency Tag */}
-        <div className="hidden md:flex items-center gap-1 text-xs text-zinc-400 pl-3 border-l border-zinc-850">
+        {/* Author Link */}
+        <div className="hidden md:flex items-center gap-2 text-xs text-zinc-400 pl-3 border-l border-zinc-850">
           <span>By</span>
           <a
-            href="https://www.navyatech.co.in/"
+            href="https://github.com/swarajshelke12"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-zinc-300 hover:text-white font-medium transition-colors"
+            className="text-zinc-300 hover:text-white font-medium transition-colors hover:underline"
           >
-            nayva tech industries
+            Swaraj Shelke
           </a>
         </div>
 
