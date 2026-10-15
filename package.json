@@ -2,9 +2,9 @@
   "name": "meetprep-crm",
   "private": true,
   "version": "1.0.0",
-  "description": "AI Meeting Prepration automation Portal by nayva tech industries",
-  "author": "nayva tech industries <contact@navyatech.co.in>",
-  "homepage": "https://www.navyatech.co.in/",
+  "description": "AI Meeting Preparation Automation CRM by Swaraj Shelke",
+  "author": "Swaraj Shelke <swarajshelke392@gmail.com>",
+  "homepage": "https://github.com/swarajshelke12",
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
