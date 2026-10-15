@@ -82,14 +82,12 @@ Senior executives and sales professionals often lose **30 to 45 minutes per meet
 
 ---
 
-## 👨‍💻 Creator & Support
+## 👨‍💻 Creator & Links
 
 Built and engineered by **Swaraj Shelke**.
 
 - **GitHub**: [github.com/swarajshelke12](https://github.com/swarajshelke12)
 - **LinkedIn**: [linkedin.com/in/swaraj-shelke-0a3a752b8](https://linkedin.com/in/swaraj-shelke-0a3a752b8)
-- **Email**: [swarajshelke392@gmail.com](mailto:swarajshelke392@gmail.com)
-- **Direct WhatsApp**: [+91 8668820392](https://wa.me/918668820392)
 
 ---
 

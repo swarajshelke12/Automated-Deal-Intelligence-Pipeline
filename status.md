@@ -16,9 +16,7 @@
 
 ---
 
-## Creator & Support
+## Creator & Links
 - **Author**: Swaraj Shelke
 - **GitHub**: https://github.com/swarajshelke12
 - **LinkedIn**: https://linkedin.com/in/swaraj-shelke-0a3a752b8
-- **Email**: swarajshelke392@gmail.com
-- **WhatsApp**: +91 8668820392
