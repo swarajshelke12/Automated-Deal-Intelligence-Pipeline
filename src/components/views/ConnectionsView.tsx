@@ -809,9 +809,9 @@ export const ConnectionsView: React.FC = () => {
             </div>
             <div>
               <h3 className="text-xs font-semibold text-zinc-100 flex items-center gap-2">
-                <span>AI Meeting Prepration automation</span>
+                <span>AI Meeting Preparation CRM</span>
                 <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800/60">
-                  Managed by nayva tech industries
+                  Managed by Swaraj Shelke
                 </span>
               </h3>
               <p className="text-[11px] text-zinc-400 mt-0.5">
@@ -849,7 +849,7 @@ export const ConnectionsView: React.FC = () => {
                 <span>Developer Hand-off</span>
               </div>
               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                nayva tech industries developers securely link your keys to your private automation pipeline.
+                Swaraj Shelke securely links your keys to your private automation pipeline.
               </p>
             </div>
 
