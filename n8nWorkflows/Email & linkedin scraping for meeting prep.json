@@ -297,7 +297,7 @@
               "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "No activities found."
+              "value": "No LinkedIn profile provided."
             }
           ]
         },
@@ -439,24 +439,24 @@
       "parameters": {
         "conditions": {
           "options": {
-            "caseSensitive": true,
+            "caseSensitive": false,
             "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
+          "combinator": "and",
           "conditions": [
             {
               "id": "1382e335-bfae-4665-a2ee-a05496a7b463",
               "operator": {
                 "type": "string",
-                "operation": "exists",
-                "singleValue": true
+                "operation": "startsWith",
+                "singleValue": false
               },
-              "leftValue": "={{ $json.linkedin_url || $json.linkedin || $json.linkedin_profile_url }}\n",
-              "rightValue": ""
+              "leftValue": "={{ ($json.linkedin_url || $json.linkedin || $json.linkedin_profile_url || \"\").trim() }}",
+              "rightValue": "http"
             }
-          ],
-          "combinator": "and"
+          ]
         },
         "options": {}
       },
@@ -605,7 +605,7 @@
               "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "No activities found."
+              "value": "No public LinkedIn profile activities retrieved."
             }
           ]
         },
@@ -645,7 +645,8 @@
           "id": "h0BZVb9Osb1PoGY8",
           "name": "Apify API"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     }
   ],
   "connections": {
