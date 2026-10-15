@@ -475,7 +475,7 @@
           "options": {
             "caseSensitive": false,
             "leftValue": "",
-            "typeValidation": "strict",
+            "typeValidation": "loose",
             "version": 2
           },
           "combinator": "and",
@@ -487,7 +487,7 @@
                 "operation": "notEmpty",
                 "singleValue": true
               },
-              "leftValue": "={{ $json.headline || $json.about || $json.id || \"\" }}",
+              "leftValue": "={{ $json.headline || $json.about || $json.firstName || $json.id || \"\" }}",
               "rightValue": ""
             }
           ]
@@ -495,7 +495,7 @@
         "options": {}
       },
       "id": "8b28e723-e6e8-4f24-88da-bbc77ac0ef4d",
-      "name": "Is Scrape Successful?1",
+      "name": "Is Scrape Successful",
       "type": "n8n-nodes-base.if",
       "position": [
         2896,
@@ -559,11 +559,11 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Full Name: {{ $json.firstName }} {{ $json.lastName }}\nHeadline: {{ $json.headline }}\nAbout: {{ $json.about }}\nIndustry: {{ $json.industry?.name || $json.industry || 'IT' }}\nLocation: {{ $json.location?.linkedinText || $json.location || '' }}\nProfile URL: {{ $json.linkedinUrl }}\nRecent Experience: {{ ($json.experience || []).slice(0, 3).map(e => `${e.title || ''} at ${e.company || ''}: ${e.description || ''}`).join('\\n') }}\nSkills: {{ ($json.skills || []).slice(0, 8).join(', ') }}",
+        "text": "=Profile URL: {{ $json.linkedinUrl }}\nFull Name: {{ $json.firstName }} {{ $json.lastName }}\nHeadline: {{ $json.headline }}\nAbout: {{ $json.about }}\nIndustry: {{ $json.industry?.name || $json.industry || '' }}\nLocation: {{ $json.location?.linkedinText || $json.location || '' }}\nExperience: {{ ($json.experience || []).slice(0, 3).map(e => `${e.title || ''} at ${e.company || ''}: ${e.description || ''}`).join('\\n') }}\nSkills: {{ ($json.skills || []).slice(0, 8).join(', ') }}",
         "messages": {
           "messageValues": [
             {
-              "message": "=You are a senior executive meeting intelligence assistant.\nSummarize this attendee's professional background, current position, and core expertise into 2-3 concise, high-value bullet points for an upcoming sales meeting.\nDo NOT use emojis, conversational filler, or pleasantries."
+              "message": "=You are a senior executive meeting intelligence briefing system.\nSummarize this attendee's professional background, current position, and core expertise into 2-3 concise, high-value bullet points for an upcoming sales meeting.\nDo NOT use emojis, conversational filler, or pleasantries."
             }
           ]
         }
@@ -766,24 +766,6 @@
         ]
       ]
     },
-    "Is Scrape Successful?1": {
-      "main": [
-        [
-          {
-            "node": "LinkedIn Summarizer Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Return LinkedIn Error3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Correspondance Recap Agent1": {
       "main": [
         [
@@ -826,7 +808,25 @@
       "main": [
         [
           {
-            "node": "Is Scrape Successful?1",
+            "node": "Is Scrape Successful",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Scrape Successful": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Summarizer Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return LinkedIn Error3",
             "type": "main",
             "index": 0
           }
