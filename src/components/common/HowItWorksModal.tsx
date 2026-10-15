@@ -25,8 +25,8 @@ export const HowItWorksModal: React.FC = () => {
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-zinc-100">How AI Meeting Prepration automation Works</h2>
-              <p className="text-[11px] text-zinc-400">Powered by nayva tech industries · 100% automated for you</p>
+              <h2 className="text-sm font-semibold text-zinc-100">How AI Meeting Preparation CRM Works</h2>
+              <p className="text-[11px] text-zinc-400">Powered by Swaraj Shelke · 100% automated for you</p>
             </div>
           </div>
 
