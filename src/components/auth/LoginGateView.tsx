@@ -156,23 +156,33 @@ export const LoginGateView: React.FC = () => {
               <span>Need your client credentials?</span>
             </div>
             <p>
-              This CRM is private to enterprise clients. Your Client ID and Access Key are provisioned directly by the engineering team at{' '}
-              <span className="text-zinc-300">nayva tech industries</span>.
+              This CRM is private to authorized executives. Your Client ID and Access Key are provisioned directly by{' '}
+              <span className="text-zinc-300 font-medium">Swaraj Shelke</span>.
             </p>
           </div>
         </div>
 
-        {/* Footer info */}
-        <div className="text-center text-[11px] text-zinc-600 flex items-center justify-center gap-3">
-          <span>Engineered by nayva tech industries</span>
+        {/* Footer info with Swaraj's links */}
+        <div className="text-center text-[11px] text-zinc-500 flex items-center justify-center gap-3">
+          <span>Engineered by Swaraj Shelke</span>
           <span>·</span>
           <a
-            href="https://www.navyatech.co.in/"
+            href="https://github.com/swarajshelke12"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-zinc-400 flex items-center gap-0.5 transition-colors"
+            className="hover:text-zinc-300 flex items-center gap-0.5 transition-colors"
           >
-            <span>navyatech.co.in</span>
+            <span>GitHub</span>
+            <ExternalLink className="w-2.5 h-2.5" />
+          </a>
+          <span>·</span>
+          <a
+            href="https://linkedin.com/in/swaraj-shelke-0a3a752b8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-zinc-300 flex items-center gap-0.5 transition-colors"
+          >
+            <span>LinkedIn</span>
             <ExternalLink className="w-2.5 h-2.5" />
           </a>
         </div>
