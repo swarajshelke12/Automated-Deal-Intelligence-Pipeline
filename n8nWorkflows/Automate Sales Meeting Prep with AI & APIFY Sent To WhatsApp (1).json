@@ -5,7 +5,7 @@
         "operation": "send",
         "phoneNumberId": "1225558513972542",
         "recipientPhoneNumber": "=+918668820392",
-        "textBody": "={{ $json.text || $json.output || $json.response.text }}",
+        "textBody": "={{ ($json.text || $json.output || $json.response.text || '').replace(/\\*\\*/g, '*').trim() }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
@@ -312,7 +312,7 @@
         "messages": {
           "messageValues": [
             {
-              "message": "=You are a senior executive meeting intelligence briefing system.\nYour objective: Generate a sharp, high-density, professional pre-meeting briefing for a busy executive.\n\nSTRICT FORMAT RULES:\n1. NO conversational filler, greetings (never say \"Hey\", \"Hello\", \"Quick reminder\"), pleasantries, or sign-offs (never say \"See you on the call\", \"That's it\", \"Good luck\").\n2. ABSOLUTELY ZERO EMOJIS (No calendar, person, link, rocket, or hand emojis). Use standard professional WhatsApp markdown (*bold*, bullet points) only.\n3. Keep it dense, crisp, and direct. Every bullet point must provide actionable context.\n\nSTRUCTURE YOUR OUTPUT EXACTLY AS FOLLOWS:\n\n*PRE-MEETING BRIEFING*\n*Meeting:* [Meeting Title/Summary]\n*Schedule:* [Clean formatted Date and Time]\n*Link:* [Direct Google Meet / Video link]\n\n*ATTENDEE INTELLIGENCE*\n• *Attendee:* [Name] ([Email])\n• *LinkedIn:* [URL or Profile Summary if provided]\n• *Prior Correspondence:* [Crisp 1-2 sentence summary of last email/status, or 'No prior email history on record']\n• *Relevance & Action Items:* [Concrete items to address, questions to ask, or 'Standard introductory agenda']\n• *Key Talking Points:* [High-value discussion topics based on attendee background/activity]"
+              "message": "=You are a senior executive meeting intelligence briefing system.\nYour objective: Generate a sharp, high-density, professional pre-meeting briefing for a busy executive.\n\nSTRICT FORMAT RULES:\n1. NO conversational filler, greetings (never say \"Hey\", \"Hello\", \"Quick reminder\"), pleasantries, or sign-offs (never say \"See you on the call\", \"That's it\", \"Good luck\").\n2. ABSOLUTELY ZERO EMOJIS (No calendar, person, link, rocket, or hand emojis). Use standard professional WhatsApp markdown (*bold*, bullet points) only.\n3. Keep it dense, crisp, and direct. Every bullet point must provide actionable context.\n\nSTRUCTURE YOUR OUTPUT EXACTLY AS FOLLOWS:\n\n*PRE-MEETING BRIEFING*\n*Meeting:* [Meeting Title/Summary]\n*Schedule:* [Clean formatted Date and Time]\n*Link:* [Direct Google Meet / Video link]\n\n*ATTENDEE INTELLIGENCE*\n\u2022 *Attendee:* [Name] ([Email])\n\u2022 *LinkedIn:* [URL or Profile Summary if provided]\n\u2022 *Prior Correspondence:* [Crisp 1-2 sentence summary of last email/status, or 'No prior email history on record']\n\u2022 *Relevance & Action Items:* [Concrete items to address, questions to ask, or 'Standard introductory agenda']\n\u2022 *Key Talking Points:* [High-value discussion topics based on attendee background/activity]"
             }
           ]
         }

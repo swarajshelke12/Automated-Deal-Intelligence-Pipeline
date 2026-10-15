@@ -162,7 +162,7 @@
               "id": "fc4b63a7-ad4d-49ff-9d42-715760910f6a",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "={{ $json.text || $json.output || $json.response.text }}"
+              "value": "={{ ($json.text || $json.output || $json.response.text || '').replace(/\\*\\*/g, '*').replace(/\\n\\s*\\n\\s*\\n+/g, '\\n\\n').trim() }}"
             }
           ]
         },
@@ -563,7 +563,7 @@
         "messages": {
           "messageValues": [
             {
-              "message": "=You are a senior executive meeting intelligence briefing system.\nSummarize this attendee's professional background, current position, and core expertise into 2-3 concise, high-value bullet points for an upcoming sales meeting.\nDo NOT use emojis, conversational filler, or pleasantries."
+              "message": "=You are a senior executive sales intelligence briefing system.\nSummarize this attendee's professional background, current position, and core expertise into 2-3 concise, high-value bullet points.\n\nSTRICT FORMAT RULES:\n1. NO title headers or intros (never write 'Quick-Hit Profile', person's name, or headings). Start directly with bullet points.\n2. NO conversational filler, emojis, or pleasantries.\n3. NO double asterisks (**). For WhatsApp formatting, use SINGLE asterisks only (*bold*) or plain text.\n4. Keep bullets crisp, factual, and actionable for an upcoming sales meeting."
             }
           ]
         }
