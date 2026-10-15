@@ -101,8 +101,8 @@
       "alwaysOutputData": true,
       "credentials": {
         "gmailOAuth2": {
-          "id": "UYZ1Un9d3AMyMGb1",
-          "name": "Swaraj Gmail"
+          "id": "YOUR_GMAIL_CREDENTIALS_ID",
+          "name": "Gmail Account"
         }
       }
     },
@@ -162,7 +162,7 @@
               "id": "fc4b63a7-ad4d-49ff-9d42-715760910f6a",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "={{ ($json.text || $json.output || $json.response.text || '').replace(/\\*\\*/g, '*').replace(/\\n\\s*\\n\\s*\\n+/g, '\\n\\n').trim() }}"
+              "value": "={{ $json.text }}"
             }
           ]
         },
@@ -297,7 +297,7 @@
               "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "No LinkedIn profile provided."
+              "value": "No activities found."
             }
           ]
         },
@@ -439,24 +439,24 @@
       "parameters": {
         "conditions": {
           "options": {
-            "caseSensitive": false,
+            "caseSensitive": true,
             "leftValue": "",
             "typeValidation": "strict",
             "version": 2
           },
-          "combinator": "and",
           "conditions": [
             {
               "id": "1382e335-bfae-4665-a2ee-a05496a7b463",
               "operator": {
                 "type": "string",
-                "operation": "startsWith",
-                "singleValue": false
+                "operation": "exists",
+                "singleValue": true
               },
-              "leftValue": "={{ ($json.linkedin_url || $json.linkedin || $json.linkedin_profile_url || \"\").trim() }}",
-              "rightValue": "http"
+              "leftValue": "={{ $json.linkedin_url || $json.linkedin || $json.linkedin_profile_url }}\n",
+              "rightValue": ""
             }
-          ]
+          ],
+          "combinator": "and"
         },
         "options": {}
       },
@@ -466,40 +466,6 @@
       "position": [
         2448,
         768
-      ],
-      "typeVersion": 2.2
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": false,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "combinator": "and",
-          "conditions": [
-            {
-              "id": "3861abc7-7699-4459-b983-0c8b33e090b5",
-              "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              },
-              "leftValue": "={{ $json.headline || $json.about || $json.firstName || $json.id || \"\" }}",
-              "rightValue": ""
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "8b28e723-e6e8-4f24-88da-bbc77ac0ef4d",
-      "name": "Is Scrape Successful",
-      "type": "n8n-nodes-base.if",
-      "position": [
-        2896,
-        672
       ],
       "typeVersion": 2.2
     },
@@ -559,11 +525,11 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Profile URL: {{ $json.linkedinUrl }}\nFull Name: {{ $json.firstName }} {{ $json.lastName }}\nHeadline: {{ $json.headline }}\nAbout: {{ $json.about }}\nIndustry: {{ $json.industry?.name || $json.industry || '' }}\nLocation: {{ $json.location?.linkedinText || $json.location || '' }}\nExperience: {{ ($json.experience || []).slice(0, 3).map(e => `${e.title || ''} at ${e.company || ''}: ${e.description || ''}`).join('\\n') }}\nSkills: {{ ($json.skills || []).slice(0, 8).join(', ') }}",
+        "text": "=Profile URL: {{ $json.linkedinUrl }}\nFull Name: {{ $json.firstName }} {{ $json.lastName }}\nHeadline: {{ $json.headline }}\nAbout: {{ $json.about }}\nIndustry: {{ $json.industry?.name || $json.industry || '' }}\nLocation: {{ $json.location?.linkedinText || $json.location || '' }}\nRecent Experience: {{ ($json.experience || []).slice(0, 3).map(e => `${e.title || ''} at ${e.company || ''}: ${e.description || ''}`).join('\\n') }}\nSkills: {{ ($json.skills || []).slice(0, 8).join(', ') }}\n",
         "messages": {
           "messageValues": [
             {
-              "message": "=You are a senior executive sales intelligence briefing system.\nSummarize this attendee's professional background, current position, and core expertise into 2-3 concise, high-value bullet points.\n\nSTRICT FORMAT RULES:\n1. NO title headers or intros (never write 'Quick-Hit Profile', person's name, or headings). Start directly with bullet points.\n2. NO conversational filler, emojis, or pleasantries.\n3. NO double asterisks (**). For WhatsApp formatting, use SINGLE asterisks only (*bold*) or plain text.\n4. Keep bullets crisp, factual, and actionable for an upcoming sales meeting."
+              "message": "=You are an executive meeting preparation assistant. Summarize this attendee's professional background, current role, and recent activity into 3-4 concise, high-value talking points for an upcoming sales meeting.\n"
             }
           ]
         }
@@ -592,8 +558,8 @@
       "name": "Groq Chat Model1",
       "credentials": {
         "groqApi": {
-          "id": "zIEhPVGfK1pbN5F3",
-          "name": "Groq api"
+          "id": "YOUR_GROQ_CREDENTIALS_ID",
+          "name": "Groq API Account"
         }
       }
     },
@@ -605,7 +571,7 @@
               "id": "bf5a0781-3bad-4f63-a49c-273b03204747",
               "name": "linkedin_summary",
               "type": "string",
-              "value": "No public LinkedIn profile activities retrieved."
+              "value": "No activities found."
             }
           ]
         },
@@ -642,11 +608,44 @@
       "typeVersion": 4.2,
       "credentials": {
         "httpQueryAuth": {
-          "id": "h0BZVb9Osb1PoGY8",
-          "name": "Apify API"
+          "id": "YOUR_APIFY_CREDENTIALS_ID",
+          "name": "Apify API Account"
         }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3861abc7-7699-4459-b983-0c8b33e090b5",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.headline || $json.about || $json.id || '' }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
       },
-      "onError": "continueRegularOutput"
+      "id": "8b28e723-e6e8-4f24-88da-bbc77ac0ef4d",
+      "name": "Is Scrape Successful",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2896,
+        672
+      ],
+      "typeVersion": 2.2
     }
   ],
   "connections": {
@@ -834,16 +833,7 @@
       ]
     }
   },
-  "pinData": {
-    "Execute Workflow Trigger": [
-      {
-        "name": "performxswaraj",
-        "email": "performxswaraj@gmail.com",
-        "linkedin_url": "https://www.linkedin.com/in/swaraj-shelke-0a3a752b8/",
-        "route": "linkedin"
-      }
-    ]
-  },
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ede2a1723ff2c9a76eefabde4eb2ad1dd03725eba54d7dc23a2039bda2e2dc3e"
