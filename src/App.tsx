@@ -90,24 +90,39 @@ const MainLayout: React.FC = () => {
         <footer className="border-t border-zinc-850 px-4 sm:px-6 py-3.5 bg-zinc-950 text-xs text-zinc-500">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-zinc-300">AI Meeting Prepration automation</span>
+              <span className="font-semibold text-zinc-300">AI Meeting Preparation CRM</span>
               <span>·</span>
-              <span className="text-zinc-400">Production AI Meeting Intelligence</span>
+              <span className="text-zinc-400">Autonomous Intelligence</span>
               <span>·</span>
-              <span>nayva tech industries</span>
+              <span className="text-zinc-300">Swaraj Shelke</span>
             </div>
 
-            <div className="flex items-center gap-4 text-[11px]">
-              <span className="text-zinc-500">Managed AI Automation Client Portal</span>
-              <span>·</span>
+            <div className="flex items-center gap-3 text-[11px]">
               <a
-                href="https://www.navyatech.co.in/"
+                href="https://github.com/swarajshelke12"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-zinc-400 hover:text-zinc-200 flex items-center gap-1 transition-colors"
               >
-                <span>navyatech.co.in</span>
+                <span>GitHub</span>
                 <ExternalLink className="w-3 h-3" />
+              </a>
+              <span>·</span>
+              <a
+                href="https://linkedin.com/in/swaraj-shelke-0a3a752b8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-400 hover:text-zinc-200 flex items-center gap-1 transition-colors"
+              >
+                <span>LinkedIn</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+              <span>·</span>
+              <a
+                href="mailto:swarajshelke392@gmail.com"
+                className="text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
+                <span>Email</span>
               </a>
             </div>
           </div>
