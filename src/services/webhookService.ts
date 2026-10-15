@@ -67,7 +67,7 @@ function extractMeetingsFromData(data: any): Meeting[] | undefined {
 /**
  * Saves submitted credentials to the client's 12-hour encrypted vault.
  * The CRM is designed for clients to configure their credentials and view dossiers,
- * while nayva tech industries developers attach them to the background n8n automation.
+ * while Swaraj Shelke's automation pipeline processes them.
  */
 export async function sendCredentialsToWebhook(credentials: WorkflowCredentials): Promise<WebhookResponse> {
   const timestamp = new Date().toISOString();
@@ -77,7 +77,7 @@ export async function sendCredentialsToWebhook(credentials: WorkflowCredentials)
   if (!webhookUrl) {
     return {
       success: true,
-      message: 'Credentials saved in 12-hour client vault. Ready for nayva tech industries developers.',
+      message: 'Credentials saved in 12-hour client vault. Ready for background automation pipeline.',
       timestamp
     };
   }

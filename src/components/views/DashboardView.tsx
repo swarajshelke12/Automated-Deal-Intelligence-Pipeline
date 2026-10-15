@@ -84,10 +84,10 @@ export const DashboardView: React.FC = () => {
             </div>
 
             <h1 className="text-lg font-semibold text-zinc-100 tracking-tight">
-              AI Meeting Prepration automation
+              AI Meeting Preparation CRM
             </h1>
             <p className="text-xs text-zinc-400 mt-1 leading-relaxed max-w-xl">
-              Powered by nayva tech industries. Autonomous calendar monitoring, attendee research, and executive WhatsApp briefings delivered 60 minutes before calls.
+              Engineered by Swaraj Shelke. Autonomous calendar monitoring, attendee research, and executive WhatsApp briefings delivered 60 minutes before calls.
             </p>
           </div>
 

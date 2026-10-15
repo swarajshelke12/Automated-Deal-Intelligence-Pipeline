@@ -322,11 +322,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const isMatch =
       // 1. Direct simple match (client / 1234) or matches current env
       (inputId === configuredId && inputPass === configuredPass) ||
-      (inputId === 'client' && (inputPass === '1234' || inputPass === 'NayvaTech2026')) ||
-      (inputId === 'client@navyatech.co.in' && (inputPass === '1234' || inputPass === 'NayvaTech2026')) ||
+      (inputId === 'client' && (inputPass === '1234' || inputPass === 'Swaraj2026')) ||
+      (inputId === 'swaraj' && (inputPass === '1234' || inputPass === 'Swaraj2026' || inputPass === 'admin')) ||
+      (inputId === 'swarajshelke392@gmail.com' && (inputPass === '1234' || inputPass === 'Swaraj2026' || inputPass === 'admin')) ||
       // 2. Admin access
-      ((inputId === 'admin' || inputId === 'admin@navyatech.co.in') &&
-        (inputPass === 'admin' || inputPass === '1234' || inputPass === 'NayvaTech2026' || inputPass === configuredPass));
+      ((inputId === 'admin' || inputId === 'root') &&
+        (inputPass === 'admin' || inputPass === '1234' || inputPass === 'Swaraj2026' || inputPass === configuredPass));
 
     if (isMatch) {
       setIsAuthenticated(true);
@@ -339,13 +340,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           localStorage.setItem('meetprep_client_id', inputId);
         }
       } catch {}
-      showToast('✓ Access granted. Welcome to AI Meeting Prepration automation.', 'success');
+      showToast('✓ Access granted. Welcome to AI Meeting Preparation CRM.', 'success');
       return { success: true, message: 'Access granted.' };
     }
 
     return {
       success: false,
-      message: 'Invalid Client ID or Password. Please contact your nayva tech industries engineer.'
+      message: 'Invalid Client ID or Password. Please contact Swaraj Shelke (swarajshelke392@gmail.com).'
     };
   };
 

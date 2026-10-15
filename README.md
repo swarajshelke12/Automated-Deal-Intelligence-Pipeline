@@ -1,7 +1,7 @@
 <div align="center">
 
-# AI Meeting Prepration automation
-### *AI-Powered Meeting Preparation & Executive Intelligence Portal*
+# AI Meeting Preparation CRM
+### *Autonomous Pre-Meeting Intelligence & Executive Dossier Pipeline*
 
 [![React 19](https://img.shields.io/badge/React-19.2-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -9,10 +9,10 @@
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![n8n Automation](https://img.shields.io/badge/n8n-Workflow_Engine-EA4B71?style=flat-square&logo=n8n&logoColor=white)](https://n8n.io/)
 [![Security Model](https://img.shields.io/badge/Security-12h_Auto--Purge-10B981?style=flat-square&logo=shield&logoColor=white)](#-security--privacy-architecture)
-[![License](https://img.shields.io/badge/License-Proprietary-8B5CF6?style=flat-square)](https://www.navyatech.co.in/)
+[![Author](https://img.shields.io/badge/Author-Swaraj_Shelke-8B5CF6?style=flat-square)](https://github.com/swarajshelke12)
 
 <p align="center">
-  <strong>Client Automation Portal engineered by <a href="https://www.navyatech.co.in/">nayva tech industries</a></strong>
+  <strong>Client Automation Portal engineered & built by <a href="https://github.com/swarajshelke12">Swaraj Shelke</a></strong>
 </p>
 
 <p align="center">
@@ -26,7 +26,7 @@
 [How n8n & Frontend Work Together](#-how-n8n-and-frontend-work-together) •
 [Security Model](#-security--privacy-architecture) •
 [n8n Automation](#-n8n-automation-engine-integration) •
-[Quick Start](#-quick-start--installation)
+[Creator & Links](#-creator--support)
 
 ---
 
@@ -36,7 +36,7 @@
 
 Senior executives and sales professionals often lose **30 to 45 minutes per meeting** manually digging through prior email correspondence, reviewing LinkedIn profiles, and drafting conversation agendas.
 
-**AI Meeting Prepration automation** eliminates this overhead completely:
+**AI Meeting Preparation CRM** eliminates this overhead completely:
 
 1. **Monitors your calendar autonomously** via Google Calendar OAuth2 background poller every 1–2 hours.
 2. **Conducts autonomous research** using Gmail API correspondence history and Apify LinkedIn scrapers.
@@ -76,23 +76,24 @@ Senior executives and sales professionals often lose **30 to 45 minutes per meet
 |             |                                                                     |
 |             +---> [Meetings View] : Review upcoming briefings & dossiers          |
 |             +---> [Connections]   : Configure credentials safely (12h vault)      |
-|             +---> [Developer Handoff]: nayva tech industries attaches keys        |
+|             +---> [Developer Handoff]: Swaraj Shelke links keys securely         |
 +-----------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 🏢 About nayva tech industries
+## 👨‍💻 Creator & Support
 
-**nayva tech industries** is a premier AI automation company specializing in bespoke workflow automation, AI agents, and enterprise process optimization.
+Built and engineered by **Swaraj Shelke**.
 
-- **Website**: [https://www.navyatech.co.in/](https://www.navyatech.co.in/)
-- **Services**: Custom n8n workflows, generative AI integrations, CRM intelligence pipelines, and B2B automation portals.
-- **Inquiries**: [contact@navyatech.co.in](mailto:contact@navyatech.co.in)
+- **GitHub**: [github.com/swarajshelke12](https://github.com/swarajshelke12)
+- **LinkedIn**: [linkedin.com/in/swaraj-shelke-0a3a752b8](https://linkedin.com/in/swaraj-shelke-0a3a752b8)
+- **Email**: [swarajshelke392@gmail.com](mailto:swarajshelke392@gmail.com)
+- **Direct WhatsApp**: [+91 8668820392](https://wa.me/918668820392)
 
 ---
 
-## 📄 License & Copyright
+## 📄 License & Attribution
 
-© 2024–2026 **nayva tech industries**. All rights reserved.  
-Unauthorized distribution, copying, or modification of proprietary workflows and designs is strictly prohibited.
+© 2024–2026 **Swaraj Shelke**. All rights reserved.  
+Engineered with privacy-first principles and production-grade reliability.
