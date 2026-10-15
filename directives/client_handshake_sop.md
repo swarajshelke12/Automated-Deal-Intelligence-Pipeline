@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Developer Hand-Off Protocol
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Coordinate credential handover from client intake in the CRM to production execution inside the n8n worker engine.

@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Apify LinkedIn Scraping
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Scrape LinkedIn public profile and recent posts for attendees using Apify actors to formulate strategic conversation starters.

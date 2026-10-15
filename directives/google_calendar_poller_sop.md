@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Google Calendar Poller
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Regularly monitor the client's Google Calendar OAuth2 API to discover scheduled events beginning within the next 60 minutes.

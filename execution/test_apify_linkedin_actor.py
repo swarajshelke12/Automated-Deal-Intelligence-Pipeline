@@ -1,6 +1,6 @@
 """
 Test Apify LinkedIn Actor Payload
-Layer 3 Deterministic Tool — nayva tech industries
+Layer 3 Deterministic Tool — Swaraj Shelke Automations
 """
 from utils import logger
 

@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Gmail Correspondence Recap
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Retrieve the most recent email thread with each attendee and summarize key context points using AI.

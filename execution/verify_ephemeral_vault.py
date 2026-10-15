@@ -1,6 +1,6 @@
 """
 Verify Ephemeral Vault Memory Lifecycle
-Layer 3 Deterministic Tool — nayva tech industries
+Layer 3 Deterministic Tool — Swaraj Shelke Automations
 """
 import time
 from utils import logger

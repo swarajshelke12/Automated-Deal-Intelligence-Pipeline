@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Executive Dossier Synthesis
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Synthesize attendee background, email recaps, and calendar objectives into 4 high-leverage talking points.

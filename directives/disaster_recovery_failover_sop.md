@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Disaster Recovery & Failover
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Handle ngrok tunnel drops, API timeouts, or temporary rate limits gracefully without interrupting calendar tracking.

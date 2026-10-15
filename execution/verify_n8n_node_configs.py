@@ -1,6 +1,6 @@
 """
 Verify n8n Node Configurations
-Layer 3 Deterministic Tool — nayva tech industries
+Layer 3 Deterministic Tool — Swaraj Shelke Automations
 """
 import json
 from pathlib import Path

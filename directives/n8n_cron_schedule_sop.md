@@ -1,5 +1,5 @@
 # Standard Operating Procedure: n8n Cron Schedule Configuration
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Configure the n8n automation engine to trigger autonomously every 1 to 2 hours without manual intervention.

@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Attendee Information Extraction
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Extract guest participant details (name, email, LinkedIn URL) from raw calendar invites while omitting the meeting host.

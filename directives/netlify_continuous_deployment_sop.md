@@ -1,5 +1,5 @@
 # Standard Operating Procedure: Netlify Continuous Deployment
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Deploy updates to Netlify production seamlessly upon git pushes to the `main` branch.

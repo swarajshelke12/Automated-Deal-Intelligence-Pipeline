@@ -1,5 +1,5 @@
 # Standard Operating Procedure: WhatsApp Cloud API Delivery
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Dispatch the synthesized intelligence briefing 60 minutes prior to call time directly to the executive's WhatsApp.

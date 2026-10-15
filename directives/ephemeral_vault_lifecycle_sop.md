@@ -1,5 +1,5 @@
 # Standard Operating Procedure: 12-Hour Ephemeral Vault Lifecycle
-*Directive Layer 1 — nayva tech industries*
+*Directive Layer 1 — Swaraj Shelke Automations*
 
 ## Objective
 Guarantee client privacy by automatically locking and zeroing credential state 12 hours after submission.
