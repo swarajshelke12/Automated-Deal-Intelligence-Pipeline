@@ -3,8 +3,8 @@
     {
       "parameters": {
         "operation": "send",
-        "phoneNumberId": "1225558513972542",
-        "recipientPhoneNumber": "=+918668820392",
+        "phoneNumberId": "YOUR_WHATSAPP_PHONE_NUMBER_ID",
+        "recipientPhoneNumber": "YOUR_RECIPIENT_PHONE_NUMBER",
         "textBody": "={{ ($json.text || $json.output || $json.response.text || '').replace(/\\*\\*/g, '*').trim() }}",
         "additionalFields": {}
       },
@@ -19,8 +19,8 @@
       "webhookId": "23060b58-0b59-483e-9013-bd0768698480",
       "credentials": {
         "whatsAppApi": {
-          "id": "1y7htNMvi6yyLabA",
-          "name": "app: swarajshelke12autoupload"
+          "id": "YOUR_WHATSAPP_CREDENTIALS_ID",
+          "name": "WhatsApp Cloud API Account"
         }
       }
     },
@@ -29,9 +29,9 @@
         "operation": "getAll",
         "calendar": {
           "__rl": true,
-          "value": "swarajshelke392@gmail.com",
+          "value": "primary",
           "mode": "list",
-          "cachedResultName": "swarajshelke392@gmail.com"
+          "cachedResultName": "primary"
         },
         "limit": 1,
         "options": {
@@ -51,8 +51,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "21DF6vOqqOllaHHm",
-          "name": "calender swaraj"
+          "id": "YOUR_GOOGLE_CALENDAR_CREDENTIALS_ID",
+          "name": "Google Calendar Account"
         }
       }
     },
@@ -341,8 +341,8 @@
       "name": "Groq Chat Model",
       "credentials": {
         "groqApi": {
-          "id": "zIEhPVGfK1pbN5F3",
-          "name": "Groq api"
+          "id": "YOUR_GROQ_CREDENTIALS_ID",
+          "name": "Groq API Account"
         }
       }
     },
@@ -361,8 +361,8 @@
       "name": "Groq Chat Model1",
       "credentials": {
         "groqApi": {
-          "id": "zIEhPVGfK1pbN5F3",
-          "name": "Groq api"
+          "id": "YOUR_GROQ_CREDENTIALS_ID",
+          "name": "Groq API Account"
         }
       }
     },
