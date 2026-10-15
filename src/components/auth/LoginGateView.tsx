@@ -49,12 +49,12 @@ export const LoginGateView: React.FC = () => {
           </div>
 
           <h1 className="text-xl font-bold tracking-tight text-zinc-100 sm:text-2xl">
-            AI Meeting Prepration automation
+            AI Meeting Preparation CRM
           </h1>
           <p className="text-xs text-zinc-400 flex items-center justify-center gap-1.5">
-            <span>Client Intelligence Portal</span>
+            <span>Executive Intelligence Portal</span>
             <span>·</span>
-            <span className="text-zinc-300 font-medium">nayva tech industries</span>
+            <span className="text-zinc-300 font-medium">Swaraj Shelke</span>
           </p>
         </div>
 
